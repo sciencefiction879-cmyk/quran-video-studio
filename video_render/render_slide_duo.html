@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Surah Al-Fatihah Video Slide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500;700&family=Outfit:wght@300;400;600&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #04060b;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 60px 100px;
+      direction: rtl;
+    }
+
+    /* Cinematic Deep Midnight Background */
+    .bg {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: radial-gradient(ellipse at 50% 20%, #151838 0%, #080a14 55%, #020306 100%);
+    }
+
+    .ambient-sphere {
+      position: absolute;
+      width: 1250px;
+      height: 650px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 70%);
+      top: 18%;
+      left: calc(50% - 625px);
+      filter: blur(90px);
+    }
+
+    /* Gold Ornate Border */
+    .gold-frame {
+      position: absolute;
+      inset: 32px;
+      border: 1px solid rgba(212, 175, 55, 0.32);
+      border-radius: 24px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .gold-frame::after {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: 18px;
+    }
+
+    .corner {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border: 2px solid #d4af37;
+      z-index: 2;
+    }
+    .top-left { top: 32px; left: 32px; border-right: none; border-bottom: none; border-top-left-radius: 24px; }
+    .top-right { top: 32px; right: 32px; border-left: none; border-bottom: none; border-top-right-radius: 24px; }
+    .bottom-left { bottom: 32px; left: 32px; border-right: none; border-top: none; border-bottom-left-radius: 24px; }
+    .bottom-right { bottom: 32px; right: 32px; border-left: none; border-top: none; border-bottom-right-radius: 24px; }
+
+    /* Top Bar */
+    .top-bar {
+      text-align: center;
+      z-index: 10;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 28px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50px;
+      color: #fef08a;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .surah-heading {
+      font-family: 'Scheherazade New', serif;
+      font-size: 3.2rem;
+      color: #fff;
+      text-shadow: 0 0 25px rgba(212, 175, 55, 0.45);
+      line-height: 1.3;
+    }
+
+    /* Center Content Container */
+    .center-content {
+      width: 100%;
+      max-width: 1650px;
+      text-align: center;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 20px 40px;
+    }
+
+    .status-pill {
+      font-size: 1.2rem;
+      color: #ffd700;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      padding: 6px 26px;
+      border-radius: 30px;
+      margin-bottom: 35px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* Arabic Box */
+    .arabic-box {
+      direction: rtl;
+      max-width: 1600px;
+      margin-bottom: 25px;
+    }
+
+    .arabic-text {
+      font-family: 'Scheherazade New', serif;
+      line-height: 2.1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 12px 16px;
+    }
+
+    /* Individual Word Styling */
+    .word-span {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 14px;
+      transition: all 0.2s ease;
+      color: #ffffff;
+      border: 1px solid transparent;
+    }
+
+    /* Word Highlighted when spoken */
+    .word-span.highlighted {
+      color: #ffe600 !important;
+      background: rgba(212, 175, 55, 0.26);
+      border: 2px solid rgba(255, 230, 0, 0.7);
+      box-shadow: 0 0 35px rgba(255, 230, 0, 0.9), 0 0 60px rgba(212, 175, 55, 0.7);
+      transform: scale(1.1);
+    }
+
+    /* Urdu Box */
+    .urdu-box {
+      direction: rtl;
+      max-width: 1550px;
+    }
+
+    .urdu-text {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      line-height: 2.5;
+      text-shadow: 0 3px 18px rgba(0,0,0,0.95);
+      direction: rtl;
+    }
+
+    /* Mode Differences */
+    .mode-arabic .word-span {
+      font-size: 5.4rem;
+    }
+    .mode-arabic .urdu-text {
+      font-size: 2.2rem;
+      color: rgba(203, 213, 225, 0.65);
+    }
+
+    .mode-urdu .word-span {
+      font-size: 3.4rem;
+      color: rgba(255, 255, 255, 0.55);
+    }
+    .mode-urdu .urdu-text {
+      font-size: 3.5rem;
+      color: #ffffff;
+      text-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 4px 20px rgba(0,0,0,0.95);
+    }
+
+    /* Footer */
+    .footer-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      color: #64748b;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      padding: 0 30px;
+      direction: rtl;
+    }
+
+    .footer-left {
+      color: #e2e8f0;
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 1.25rem;
+    }
+
+    .footer-right {
+      color: #d4af37;
+      font-weight: 600;
+      font-family: 'Scheherazade New', serif;
+      font-size: 1.6rem;
+    }
+  </style>
+</head>
+<body id="bodyContainer">
+
+  <div class="bg"></div>
+  <div class="ambient-sphere"></div>
+
+  <div class="gold-frame"></div>
+  <div class="corner top-left"></div>
+  <div class="corner top-right"></div>
+  <div class="corner bottom-left"></div>
+  <div class="corner bottom-right"></div>
+
+  <div class="top-bar">
+    <div class="badge">✨ روح پرور تلاوت • سُورَةُ الفَاتِحَة</div>
+    <div class="surah-heading">سُورَةُ الفَاتِحَة • مَكِّيَّة</div>
+  </div>
+
+  <div class="center-content">
+    <div class="status-pill" id="statusPill">آیت ۱ از ۷  •  تلاوت عربی</div>
+    <div class="arabic-box">
+      <div class="arabic-text" id="arabicContainer"></div>
+    </div>
+    <div class="urdu-box">
+      <div class="urdu-text" id="urduText"></div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-left" id="footerText">🎙️ تلاوت: قاری مشاری بن راشد العفاسی</div>
+    <div class="footer-right">القرآن الكريم</div>
+  </div>
+
+  <script>
+    const urduNumbers = ["۱", "۲", "۳", "۴", "۵", "۶", "۷"];
+    const verses = [
+      {
+        id: 1,
+        words: ["بِسْمِ", "ٱللَّهِ", "ٱلرَّحْمَـٰنِ", "ٱلرَّحِيمِ"],
+        urdu: "شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے"
+      },
+      {
+        id: 2,
+        words: ["ٱلْحَمْدُ", "لِلَّهِ", "رَبِّ", "ٱلْعَـٰلَمِينَ"],
+        urdu: "سب طرح کی تعریف خدا ہی کو سزاوار ہے جو تمام مخلوقات کا پروردگار ہے"
+      },
+      {
+        id: 3,
+        words: ["ٱلرَّحْمَـٰنِ", "ٱلرَّحِيمِ"],
+        urdu: "بڑا مہربان نہایت رحم والا"
+      },
+      {
+        id: 4,
+        words: ["مَـٰلِكِ", "يَوْمِ", "ٱلدِّينِ"],
+        urdu: "انصاف کے دن کا حاکم"
+      },
+      {
+        id: 5,
+        words: ["إِيَّاكَ", "نَعْبُدُ", "وَإِيَّاكَ", "نَسْتَعِينُ"],
+        urdu: "اے پروردگار ہم تیری ہی عبادت کرتے ہیں اور تجھ ہی سے مدد مانگتے ہیں"
+      },
+      {
+        id: 6,
+        words: ["ٱهْدِنَا", "ٱلصِّرَٰطَ", "ٱلْمُسْتَقِيمَ"],
+        urdu: "ہم کو سیدھے راستے چلا"
+      },
+      {
+        id: 7,
+        words: ["صِرَٰطَ", "ٱلَّذِينَ", "أَنْعَمْتَ", "عَلَيْهِمْ", "غَيْرِ", "ٱلْمَغْضُوبِ", "عَلَيْهِمْ", "وَلَا", "ٱلضَّآلِّينَ"],
+        urdu: "ان لوگوں کے راستے جن پر تو اپنا فضل وکرم کرتا رہا، نہ ان کے جن پر غصے ہوتا رہا اور نہ گمراہوں کے"
+      }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const ayahNum = parseInt(params.get('ayah') || '1', 10);
+    const mode = params.get('mode') || 'arabic'; // 'arabic' or 'urdu'
+    const highlightWord = parseInt(params.get('word') || '0', 10);
+
+    const v = verses[ayahNum - 1] || verses[0];
+    const body = document.getElementById('bodyContainer');
+    body.className = mode === 'urdu' ? 'mode-urdu' : 'mode-arabic';
+
+    const arabicContainer = document.getElementById('arabicContainer');
+    v.words.forEach((w, idx) => {
+      const span = document.createElement('span');
+      span.className = `word-span ${mode === 'arabic' && (idx + 1) === highlightWord ? 'highlighted' : ''}`;
+      span.innerText = w;
+      arabicContainer.appendChild(span);
+    });
+
+    document.getElementById('urduText').innerText = v.urdu;
+
+    const numUrdu = urduNumbers[v.id - 1];
+    if (mode === 'urdu') {
+      document.getElementById('statusPill').innerText = `آیت ${numUrdu} از ۷  •  اردو ترجمہ`;
+      document.getElementById('footerText').innerText = '📖 ترجمہ: مولانا فتح محمد جالندھری  •  آواز: شمشاد علی خان';
+      if (v.id === 7) {
+        document.querySelectorAll('.word-span').forEach(s => s.style.fontSize = '2.8rem');
+        document.getElementById('urduText').style.fontSize = '2.7rem';
+      }
+    } else {
+      document.getElementById('statusPill').innerText = `آیت ${numUrdu} از ۷  •  تلاوت عربی`;
+      document.getElementById('footerText').innerText = '🎙️ تلاوت: قاری مشاری بن راشد العفاسی';
+      if (v.id === 7) {
+        document.querySelectorAll('.word-span').forEach(s => s.style.fontSize = '3.7rem');
+        document.getElementById('urduText').style.fontSize = '2.0rem';
+      }
+    }
+  </script>
+</body>
+</html>

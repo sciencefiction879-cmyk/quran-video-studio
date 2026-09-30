@@ -1,0 +1,36 @@
+# Python & System
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+.DS_Store
+.venv/
+env/
+
+# App & Build Artifacts
+*.dmg
+*.app
+dist/
+build/
+mac_app/dmg_root/
+mac_app/AppIcon.iconset/
+
+# Render outputs & temporary cache
+video_render/*.png
+video_render/*.wav
+video_render/*.mp3
+video_render/*.mp4
+video_render/*.txt
+video_render/*.json
+generated_videos/
+test_output/
+
+# Testing scratch images
+test_*.png
+test_*.jpg
+verify_*.png
+verify_*.jpg
+raw_*.png
+media_*
+debug_*
+div_full.png

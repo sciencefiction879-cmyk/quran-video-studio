@@ -1,0 +1,247 @@
+[
+  {
+    "ayah": 1,
+    "total_words": 4,
+    "words": [
+      {
+        "word_idx": 1,
+        "text": "بِسْمِ",
+        "start": 0.0,
+        "end": 0.58,
+        "duration": 0.58
+      },
+      {
+        "word_idx": 2,
+        "text": "ٱللَّهِ",
+        "start": 0.58,
+        "end": 1.409,
+        "duration": 0.829
+      },
+      {
+        "word_idx": 3,
+        "text": "ٱلرَّحْمَـٰنِ",
+        "start": 1.409,
+        "end": 2.502,
+        "duration": 1.093
+      },
+      {
+        "word_idx": 4,
+        "text": "ٱلرَّحِيمِ",
+        "start": 2.502,
+        "end": 5.84,
+        "duration": 3.338
+      }
+    ]
+  },
+  {
+    "ayah": 2,
+    "total_words": 4,
+    "words": [
+      {
+        "word_idx": 1,
+        "text": "ٱلْحَمْدُ",
+        "start": 0.0,
+        "end": 1.0,
+        "duration": 1.0
+      },
+      {
+        "word_idx": 2,
+        "text": "لِلَّهِ",
+        "start": 1.0,
+        "end": 1.86,
+        "duration": 0.86
+      },
+      {
+        "word_idx": 3,
+        "text": "رَبِّ",
+        "start": 1.86,
+        "end": 2.49,
+        "duration": 0.63
+      },
+      {
+        "word_idx": 4,
+        "text": "ٱلْعَـٰلَمِينَ",
+        "start": 2.49,
+        "end": 5.525,
+        "duration": 3.035
+      }
+    ]
+  },
+  {
+    "ayah": 3,
+    "total_words": 2,
+    "words": [
+      {
+        "word_idx": 1,
+        "text": "ٱلرَّحْمَـٰنِ",
+        "start": 0.0,
+        "end": 1.24,
+        "duration": 1.24
+      },
+      {
+        "word_idx": 2,
+        "text": "ٱلرَّحِيمِ",
+        "start": 1.24,
+        "end": 4.565,
+        "duration": 3.325
+      }
+    ]
+  },
+  {
+    "ayah": 4,
+    "total_words": 3,
+    "words": [
+      {
+        "word_idx": 1,
+        "text": "مَـٰلِكِ",
+        "start": 0.0,
+        "end": 0.82,
+        "duration": 0.82
+      },
+      {
+        "word_idx": 2,
+        "text": "يَوْمِ",
+        "start": 0.82,
+        "end": 1.42,
+        "duration": 0.6
+      },
+      {
+        "word_idx": 3,
+        "text": "ٱلدِّينِ",
+        "start": 1.42,
+        "end": 4.585,
+        "duration": 3.165
+      }
+    ]
+  },
+  {
+    "ayah": 5,
+    "total_words": 4,
+    "words": [
+      {
+        "word_idx": 1,
+        "text": "إِيَّاكَ",
+        "start": 0.0,
+        "end": 0.99,
+        "duration": 0.99
+      },
+      {
+        "word_idx": 2,
+        "text": "نَعْبُدُ",
+        "start": 0.99,
+        "end": 1.76,
+        "duration": 0.77
+      },
+      {
+        "word_idx": 3,
+        "text": "وَإِيَّاكَ",
+        "start": 1.76,
+        "end": 2.88,
+        "duration": 1.12
+      },
+      {
+        "word_idx": 4,
+        "text": "نَسْتَعِينُ",
+        "start": 2.88,
+        "end": 6.635,
+        "duration": 3.755
+      }
+    ]
+  },
+  {
+    "ayah": 6,
+    "total_words": 3,
+    "words": [
+      {
+        "word_idx": 1,
+        "text": "ٱهْدِنَا",
+        "start": 0.0,
+        "end": 0.74,
+        "duration": 0.74
+      },
+      {
+        "word_idx": 2,
+        "text": "ٱلصِّرَٰطَ",
+        "start": 0.74,
+        "end": 1.64,
+        "duration": 0.9
+      },
+      {
+        "word_idx": 3,
+        "text": "ٱلْمُسْتَقِيمَ",
+        "start": 1.64,
+        "end": 5.525,
+        "duration": 3.885
+      }
+    ]
+  },
+  {
+    "ayah": 7,
+    "total_words": 9,
+    "words": [
+      {
+        "word_idx": 1,
+        "text": "صِرَٰطَ",
+        "start": 0.0,
+        "end": 0.75,
+        "duration": 0.75
+      },
+      {
+        "word_idx": 2,
+        "text": "ٱلَّذِينَ",
+        "start": 0.75,
+        "end": 1.67,
+        "duration": 0.92
+      },
+      {
+        "word_idx": 3,
+        "text": "أَنْعَمْتَ",
+        "start": 1.67,
+        "end": 2.69,
+        "duration": 1.02
+      },
+      {
+        "word_idx": 4,
+        "text": "عَلَيْهِمْ",
+        "start": 2.69,
+        "end": 3.62,
+        "duration": 0.93
+      },
+      {
+        "word_idx": 5,
+        "text": "غَيْرِ",
+        "start": 3.62,
+        "end": 4.21,
+        "duration": 0.59
+      },
+      {
+        "word_idx": 6,
+        "text": "ٱلْمَغْضُوبِ",
+        "start": 4.21,
+        "end": 5.38,
+        "duration": 1.17
+      },
+      {
+        "word_idx": 7,
+        "text": "عَلَيْهِمْ",
+        "start": 5.38,
+        "end": 6.38,
+        "duration": 1.0
+      },
+      {
+        "word_idx": 8,
+        "text": "وَلَا",
+        "start": 6.38,
+        "end": 6.67,
+        "duration": 0.29
+      },
+      {
+        "word_idx": 9,
+        "text": "ٱلضَّآلِّينَ",
+        "start": 6.67,
+        "end": 13.175,
+        "duration": 6.505
+      }
+    ]
+  }
+]

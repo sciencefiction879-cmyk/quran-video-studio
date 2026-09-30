@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Studio Quran Slide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;700&family=Gulzar&family=Lateef:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;600;700&family=Rozha+One&family=Scheherazade+New:wght@400;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Yatra+One&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-arabic: 'Scheherazade New', serif;
+      --font-urdu: 'Noto Nastaliq Urdu', serif;
+      --font-hindi: 'Noto Sans Devanagari', sans-serif;
+      --font-english: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      background: #04060b;
+    }
+
+    .slide-viewport {
+      width: 1920px;
+      height: 1080px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+      overflow: hidden;
+      color: #fff;
+      font-family: var(--font-english, 'Outfit', sans-serif);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 60px 100px;
+      direction: rtl;
+    }
+
+    /* Background Themes */
+    .bg-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      transition: all 0.5s ease;
+    }
+
+    .bg-midnight {
+      background: radial-gradient(ellipse at 50% 20%, #151838 0%, #080a14 55%, #020306 100%);
+    }
+
+    .bg-twilight {
+      background: radial-gradient(ellipse at 50% 20%, #2e1065 0%, #0f172a 60%, #030712 100%);
+    }
+
+    .bg-emerald {
+      background: radial-gradient(ellipse at 50% 20%, #064e3b 0%, #022c22 60%, #020617 100%);
+    }
+
+    .bg-rain {
+      background: radial-gradient(ellipse at 50% 20%, #0c4a6e 0%, #082f49 60%, #020617 100%);
+    }
+
+    .bg-minimal {
+      background: #000000;
+    }
+
+    /* 9 New Soothing Spiritual Backgrounds */
+    .bg-kaaba_gold {
+      background: radial-gradient(ellipse at 50% 25%, #18140a 0%, #0c0903 50%, #030201 100%);
+    }
+
+    .bg-medina_green {
+      background: radial-gradient(ellipse at 50% 25%, #052e16 0%, #022010 50%, #010d06 100%);
+    }
+
+    .bg-celestial_stars {
+      background: radial-gradient(ellipse at 50% 25%, #0f172a 0%, #050b18 55%, #010308 100%);
+    }
+
+    .bg-maghrib_dusk {
+      background: radial-gradient(ellipse at 50% 30%, #431407 0%, #1e1b4b 55%, #05030a 100%);
+    }
+
+    .bg-aurora_serenity {
+      background: radial-gradient(ellipse at 50% 20%, #042f2e 0%, #082f49 55%, #020617 100%);
+    }
+
+    .bg-rose_oud {
+      background: radial-gradient(ellipse at 50% 25%, #4c0519 0%, #1e050e 55%, #050103 100%);
+    }
+
+    .bg-desert_mist {
+      background: radial-gradient(ellipse at 50% 25%, #2a1b0e 0%, #120e1c 55%, #040208 100%);
+    }
+
+    .bg-onyx_marble {
+      background: radial-gradient(ellipse at 50% 20%, #1c1917 0%, #0c0a09 60%, #000000 100%);
+    }
+
+    /* Islamic Geometric Arabesque Lattice Texture */
+    .islamic-lattice {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.045' fill-rule='evenodd'%3E%3Cpath d='M40 0l11.716 11.716H68.28v16.568L80 40l-11.716 11.716V68.28H51.716L40 80 28.284 68.28H11.716V51.716L0 40l11.716-11.716V11.716h16.568L40 0zm0 14.142L31.716 22.426H20v11.716L11.716 40 20 48.284v11.716h11.716L40 68.284l8.284-8.284H60V48.284L68.284 40 60 31.716V20H48.284L40 14.142z'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .ambient-sphere {
+      position: absolute;
+      width: 1250px;
+      height: 650px;
+      border-radius: 50%;
+      top: 18%;
+      left: calc(50% - 625px);
+      filter: blur(95px);
+      opacity: 0.8;
+      z-index: -1;
+    }
+
+    /* Gold Ornate Border */
+    .gold-frame {
+      position: absolute;
+      inset: 32px;
+      border: 1px solid rgba(212, 175, 55, 0.32);
+      border-radius: 24px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Template Specific Design Modifiers */
+    .slide-viewport.tpl-emerald_gold .gold-frame {
+      border: 2px solid rgba(212, 175, 55, 0.6);
+      box-shadow: inset 0 0 40px rgba(5, 46, 22, 0.6), 0 0 30px rgba(212, 175, 55, 0.25);
+    }
+    .slide-viewport.tpl-emerald_gold .badge {
+      background: rgba(6, 78, 59, 0.45);
+      border-color: rgba(212, 175, 55, 0.6);
+      color: #fef08a;
+    }
+    
+    .slide-viewport.tpl-dark_luxury .gold-frame {
+      border: 1px solid rgba(234, 179, 8, 0.5);
+      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(234, 179, 8, 0.2);
+    }
+    .slide-viewport.tpl-dark_luxury .surah-heading {
+      text-shadow: 0 0 35px rgba(234, 179, 8, 0.6);
+    }
+
+    .slide-viewport.tpl-cinematic_clean .gold-frame {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 14px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    }
+    .slide-viewport.tpl-cinematic_clean .corner {
+      border-color: rgba(255, 255, 255, 0.4);
+      border-radius: 14px;
+    }
+
+    .slide-viewport.tpl-cherry_blossom_rose .gold-frame {
+      border: 1px solid rgba(251, 113, 133, 0.45);
+      box-shadow: inset 0 0 35px rgba(76, 5, 25, 0.4);
+    }
+    .slide-viewport.tpl-cherry_blossom_rose .badge {
+      background: rgba(136, 19, 55, 0.35);
+      border-color: rgba(251, 113, 133, 0.45);
+      color: #ffe4e6;
+    }
+
+    .slide-viewport.tpl-parchment_scroll .gold-frame {
+      border: 2px solid rgba(217, 119, 6, 0.5);
+      box-shadow: inset 0 0 45px rgba(42, 27, 14, 0.6);
+    }
+
+    /* Master Emerald & Gold Parchment Layout (16:9 Landscape) */
+    .slide-viewport.has-master-parchment .gold-frame,
+    .slide-viewport.has-master-parchment .corner,
+    .slide-viewport.has-master-parchment .ambient-sphere,
+    .slide-viewport.has-master-parchment .islamic-lattice,
+    .slide-viewport.has-master-parchment .status-pill,
+    .slide-viewport.has-master-parchment .footer-bar,
+    .slide-viewport.has-master-parchment .top-bar .badge {
+      display: none !important;
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .top-bar {
+      position: absolute;
+      top: 76px;
+      left: 912px;
+      width: 418px;
+      height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      z-index: 20;
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .surah-heading {
+      font-family: 'Scheherazade New', 'Amiri Quran', serif;
+      font-size: 2.25rem;
+      color: #fef08a;
+      text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .center-content {
+      position: absolute;
+      inset: 0;
+      padding: 0;
+      margin: 0;
+      max-width: none;
+      display: block;
+      pointer-events: none;
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .arabic-box {
+      position: absolute;
+      top: 182px;
+      left: 524px;
+      width: 1196px;
+      height: 384px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 44px;
+      box-sizing: border-box;
+      direction: rtl;
+      z-index: 20;
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .arabic-text {
+      font-family: var(--font-arabic, 'Scheherazade New', 'Amiri Quran', 'Amiri', 'Geeza Pro', 'Mishafi', 'Arial Unicode MS', serif);
+      color: #0f172a;
+      text-shadow: none;
+      font-size: 3.6rem;
+      line-height: 1.8;
+      text-align: center;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .slide-viewport.has-master-parchment .highlight-glow,
+    .slide-viewport.has-master-parchment .highlight-box,
+    .slide-viewport.has-master-parchment .highlight-brush {
+      color: #b45309 !important;
+      background: rgba(212, 175, 55, 0.28) !important;
+      border: 1.5px solid rgba(180, 83, 9, 0.4) !important;
+      border-radius: 12px;
+      padding: 2px 14px;
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.45);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .translations-container {
+      position: absolute;
+      top: 636px;
+      left: 515px;
+      width: 1210px;
+      height: 275px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 2px 20px;
+      box-sizing: border-box;
+      z-index: 20;
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .urdu-text {
+      color: #7f1d1d;
+      text-shadow: none;
+      font-size: 1.85rem;
+      line-height: 1.65;
+      text-align: center;
+      font-family: var(--font-urdu, 'Noto Nastaliq Urdu', 'Noto Nastaliq Urdu UI', serif);
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .english-text {
+      color: #334155;
+      font-size: 1.05rem;
+      line-height: 1.2;
+      font-style: normal;
+      font-weight: 500;
+      text-align: center;
+      font-family: var(--font-english, 'Outfit', sans-serif);
+    }
+
+    .slide-viewport.has-master-parchment:not(.vertical-9x16) .hindi-text {
+      color: #334155;
+      font-size: 0.95rem;
+      line-height: 1.2;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    /* Master Emerald & Gold Parchment Layout (9:16 Vertical Shorts/Reels) */
+    .slide-viewport.has-master-parchment.vertical-9x16 {
+      padding: 0;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .top-bar {
+      position: absolute;
+      top: 585px;
+      left: 412px;
+      width: 268px;
+      height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      z-index: 20;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .surah-heading {
+      font-family: 'Scheherazade New', 'Amiri Quran', serif;
+      font-size: 1.85rem;
+      color: #fef08a;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .center-content {
+      position: absolute;
+      inset: 0;
+      padding: 0;
+      margin: 0;
+      max-width: none;
+      display: block;
+      pointer-events: none;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .arabic-box {
+      position: absolute;
+      top: 682px;
+      left: 52px;
+      width: 976px;
+      height: 385px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 30px;
+      box-sizing: border-box;
+      direction: rtl;
+      z-index: 20;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .arabic-text {
+      color: #0f172a;
+      text-shadow: none;
+      font-size: 3.4rem;
+      line-height: 1.9;
+      text-align: center;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .translations-container {
+      position: absolute;
+      top: 1165px;
+      left: 52px;
+      width: 976px;
+      height: 275px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 30px;
+      box-sizing: border-box;
+      z-index: 20;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .urdu-text {
+      color: #7f1d1d;
+      text-shadow: none;
+      font-size: 2.15rem;
+      line-height: 2.1;
+      text-align: center;
+      font-family: 'Noto Nastaliq Urdu', serif;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .english-text {
+      color: #334155;
+      font-size: 1.25rem;
+      line-height: 1.4;
+      font-style: normal;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .hindi-text {
+      color: #334155;
+      font-size: 1.25rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .slide-viewport.has-master-parchment .audio-waveform-container {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 24px;
+      z-index: 15;
+    }
+
+    .slide-viewport.has-master-parchment.vertical-9x16 .audio-waveform-container {
+      bottom: 75px;
+      width: 440px;
+      height: 20px;
+    }
+
+    /* Scenic / Non-Parchment Template High-Contrast Glass Cards */
+    .slide-viewport:not(.has-master-parchment) .center-content {
+      gap: 18px;
+    }
+
+    .slide-viewport:not(.has-master-parchment) .arabic-box {
+      background: rgba(8, 12, 22, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85);
+      padding: 16px 40px;
+      width: 100%;
+      max-width: 1550px;
+    }
+
+    .slide-viewport:not(.has-master-parchment) .arabic-text {
+      font-size: 3.4rem;
+      line-height: 1.75;
+    }
+
+    .slide-viewport:not(.has-master-parchment) .translations-container {
+      background: rgba(8, 12, 22, 0.74);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(212, 175, 55, 0.35);
+      border-radius: 18px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.75);
+      padding: 14px 36px;
+      width: 100%;
+      max-width: 1500px;
+      gap: 6px;
+    }
+
+    .slide-viewport:not(.has-master-parchment) .urdu-text {
+      font-size: 2.1rem;
+      line-height: 1.8;
+      color: #ffffff;
+    }
+
+    .slide-viewport:not(.has-master-parchment) .english-text {
+      font-size: 1.25rem;
+      line-height: 1.35;
+      color: #cbd5e1;
+    }
+
+    .slide-viewport:not(.has-master-parchment) .hindi-text {
+      font-size: 1.05rem;
+      line-height: 1.3;
+      color: #94a3b8;
+    }
+
+    .slide-viewport:not(.has-master-parchment) #urduText .slide-wbw-word {
+      color: #ffffff;
+    }
+
+    .slide-viewport:not(.has-master-parchment) #englishText .slide-wbw-word {
+      color: #cbd5e1;
+    }
+
+    /* 9:16 Vertical Shorts / Reels Adaptations */
+    .slide-viewport.vertical-9x16 {
+      width: 1080px;
+      height: 1920px;
+      padding: 120px 48px 90px 48px;
+    }
+    .slide-viewport.vertical-9x16 .gold-frame {
+      inset: 22px;
+    }
+    .slide-viewport.vertical-9x16 .top-left { top: 22px; left: 22px; }
+    .slide-viewport.vertical-9x16 .top-right { top: 22px; right: 22px; }
+    .slide-viewport.vertical-9x16 .bottom-left { bottom: 22px; left: 22px; }
+    .slide-viewport.vertical-9x16 .bottom-right { bottom: 22px; right: 22px; }
+    .slide-viewport.vertical-9x16 .surah-heading {
+      font-size: 2.6rem;
+    }
+    .slide-viewport.vertical-9x16 .center-content {
+      max-width: 980px;
+      gap: 28px;
+    }
+    .slide-viewport.vertical-9x16 .arabic-box {
+      max-width: 960px;
+    }
+    .slide-viewport.vertical-9x16 .arabic-text {
+      font-size: 3.8rem;
+      line-height: 2.1;
+    }
+    .slide-viewport.vertical-9x16 .translations-container {
+      max-width: 960px;
+      gap: 16px;
+    }
+    .slide-viewport.vertical-9x16 .urdu-text {
+      font-size: 2.2rem;
+      line-height: 2.3;
+    }
+    .slide-viewport.vertical-9x16 .hindi-text {
+      font-size: 1.6rem;
+      line-height: 1.8;
+    }
+    .slide-viewport.vertical-9x16 .english-text {
+      font-size: 1.45rem;
+      line-height: 1.6;
+    }
+    .slide-viewport.vertical-9x16 .watermark-badge {
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      font-size: 1.25rem;
+      color: #ffd700;
+      letter-spacing: 2px;
+      font-weight: 700;
+      opacity: 0.9;
+      z-index: 100;
+      text-shadow: 0 0 15px rgba(0,0,0,0.9);
+      display: none;
+    }
+    .watermark-badge {
+      position: absolute;
+      bottom: 42px;
+      left: 60px;
+      font-size: 1.2rem;
+      color: #ffd700;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      opacity: 0.85;
+      z-index: 100;
+      text-shadow: 0 0 12px rgba(0,0,0,0.9);
+      display: none;
+    }
+
+    .gold-frame::after {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: 18px;
+    }
+
+    .corner {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--accent-gold, #d4af37);
+      z-index: 2;
+    }
+    .top-left { top: 32px; left: 32px; border-right: none; border-bottom: none; border-top-left-radius: 24px; }
+    .top-right { top: 32px; right: 32px; border-left: none; border-bottom: none; border-top-right-radius: 24px; }
+    .bottom-left { bottom: 32px; left: 32px; border-right: none; border-top: none; border-bottom-left-radius: 24px; }
+    .bottom-right { bottom: 32px; right: 32px; border-left: none; border-top: none; border-bottom-right-radius: 24px; }
+
+    /* Top Bar */
+    .top-bar {
+      text-align: center;
+      z-index: 10;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 28px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50px;
+      color: #fef08a;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .surah-heading {
+      font-family: 'Scheherazade New', serif;
+      font-size: 3.2rem;
+      color: #fff;
+      text-shadow: 0 0 25px rgba(212, 175, 55, 0.45);
+      line-height: 1.3;
+    }
+
+    /* Center Content Container */
+    .center-content {
+      width: 100%;
+      max-width: 1650px;
+      text-align: center;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 10px 40px;
+      gap: 16px;
+    }
+
+    .status-pill {
+      font-size: 1.2rem;
+      color: #ffd700;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      padding: 6px 26px;
+      border-radius: 30px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* Arabic Box */
+    .arabic-box {
+      direction: rtl;
+      max-width: 1600px;
+    }
+
+    .arabic-text {
+      font-family: var(--font-arabic, 'Scheherazade New', 'Amiri Quran', 'Amiri', 'Geeza Pro', 'Mishafi', 'Arial Unicode MS', serif);
+      line-height: 2.1;
+      font-size: 4.8rem;
+      color: #ffffff;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    }
+
+    .slide-wbw-word {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin: 2px 6px;
+      transition: all 0.2s ease;
+    }
+
+    .slide-viewport.has-master-parchment .slide-wbw-word {
+      color: #1e293b;
+    }
+    .slide-viewport.has-master-parchment #urduText .slide-wbw-word {
+      color: #7f1d1d !important;
+    }
+    .slide-viewport.has-master-parchment #englishText .slide-wbw-word {
+      color: #334155 !important;
+    }
+
+    /* Active Highlight Styles */
+    .highlight-glow {
+      color: var(--highlight-color, #ffe600) !important;
+      text-shadow: 0 0 35px var(--highlight-color, #ffe600), 0 0 70px rgba(212, 175, 55, 0.7);
+    }
+
+    .highlight-box {
+      background: rgba(212, 175, 55, 0.25);
+      border: 2px solid var(--highlight-color, #ffe600);
+      box-shadow: 0 0 35px var(--highlight-color, #ffe600);
+      border-radius: 16px;
+      padding: 6px 20px;
+    }
+
+    .highlight-underline {
+      border-bottom: 4px solid var(--highlight-color, #ffe600);
+      box-shadow: 0 4px 20px var(--highlight-color, #ffe600);
+      padding-bottom: 6px;
+    }
+
+    .highlight-wave {
+      background: linear-gradient(135deg, var(--highlight-color, #ffe600) 0%, #ffffff 50%, var(--highlight-color, #ffe600) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px var(--highlight-color, #ffe600));
+    }
+
+    .highlight-softneon {
+      color: #ffffff !important;
+      text-shadow: 0 0 10px var(--highlight-color, #ffe600), 0 0 20px var(--highlight-color, #ffe600), 0 0 40px var(--highlight-color, #ffe600);
+    }
+
+    .highlight-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid var(--highlight-color, #ffe600);
+      border-radius: 999px;
+      padding: 6px 36px;
+      box-shadow: 0 0 35px var(--highlight-color, #ffe600);
+    }
+
+    .highlight-brush {
+      background: radial-gradient(ellipse at 50% 50%, rgba(212, 175, 55, 0.5) 0%, rgba(212, 175, 55, 0.15) 60%, transparent 100%);
+      border-radius: 24px;
+      padding: 6px 28px;
+      color: var(--highlight-color, #ffe600) !important;
+      text-shadow: 0 0 25px var(--highlight-color, #ffe600);
+    }
+
+    .highlight-invert {
+      background: var(--highlight-color, #ffe600) !important;
+      color: #030712 !important;
+      border-radius: 12px;
+      padding: 4px 22px;
+      font-weight: 700;
+      box-shadow: 0 0 30px var(--highlight-color, #ffe600);
+    }
+
+    /* Translations Stack */
+    .translations-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 1550px;
+    }
+
+    .urdu-text {
+      font-family: var(--font-urdu, 'Noto Nastaliq Urdu', serif);
+      font-size: 2.1rem;
+      line-height: 2.4;
+      color: #e2e8f0;
+      direction: rtl;
+      text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+      transition: all 0.3s ease;
+    }
+
+    .hindi-text {
+      font-family: var(--font-hindi, 'Noto Sans Devanagari', sans-serif);
+      font-size: 1.55rem;
+      line-height: 1.8;
+      color: #cbd5e1;
+      direction: ltr;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+    }
+
+    .english-text {
+      font-family: var(--font-english, 'Outfit', sans-serif);
+      font-size: 1.35rem;
+      line-height: 1.6;
+      color: #94a3b8;
+      direction: ltr;
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    /* Transliteration Box */
+    .transliteration-box {
+      direction: ltr;
+      text-align: center;
+      margin: 4px 0 8px 0;
+      max-width: 1450px;
+    }
+    .translit-text {
+      font-family: var(--font-english, 'Outfit', sans-serif);
+      font-size: 1.55rem;
+      color: #fef08a;
+      letter-spacing: 0.5px;
+      font-style: italic;
+      text-shadow: 0 0 12px rgba(254, 240, 138, 0.45);
+    }
+
+    /* Glowing Audio Waveform Visualizer Bar */
+    .audio-waveform-container {
+      width: 100%;
+      max-width: 860px;
+      height: 34px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      margin: 10px auto 0 auto;
+      z-index: 8;
+      pointer-events: none;
+    }
+    .waveform-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 5px;
+      width: 100%;
+      height: 100%;
+    }
+    .wave-bar {
+      flex: 1;
+      max-width: 10px;
+      background: linear-gradient(180deg, var(--highlight-color, #ffe600), rgba(212,175,55,0.25));
+      border-radius: 4px 4px 2px 2px;
+      box-shadow: 0 0 10px var(--highlight-color, #ffe600);
+    }
+
+    .slide-viewport.vertical-9x16 .translit-text {
+      font-size: 1.25rem;
+    }
+    .slide-viewport.vertical-9x16 .audio-waveform-container {
+      max-width: 520px;
+      height: 28px;
+    }
+
+    /* Urdu Sadaqah Jariyah Message Frame */
+    .sadaqah-message-container {
+      width: 100%;
+      max-width: 920px;
+      min-height: 48px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      margin: 8px auto 0 auto;
+      padding: 6px 18px;
+      background: rgba(5, 20, 15, 0.72);
+      border: 1px solid rgba(218, 165, 32, 0.55);
+      border-radius: 8px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.65);
+      z-index: 22;
+      direction: rtl;
+      box-sizing: border-box;
+    }
+    .sadaqah-text {
+      font-family: var(--font-urdu, 'Noto Nastaliq Urdu', serif);
+      font-size: 1.15rem;
+      color: #fefefe;
+      line-height: 1.6;
+      text-align: center;
+      width: 100%;
+    }
+    .slide-viewport.vertical-9x16 .sadaqah-message-container {
+      max-width: 580px;
+      min-height: 52px;
+      padding: 6px 14px;
+    }
+    .slide-viewport.vertical-9x16 .sadaqah-text {
+      font-size: 1.05rem;
+      line-height: 1.55;
+    }
+
+    /* Footer */
+    .footer-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      padding: 0 30px;
+      direction: rtl;
+    }
+
+    .footer-left {
+      color: #e2e8f0;
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 1.25rem;
+    }
+
+    .footer-right {
+      color: #d4af37;
+      font-weight: 600;
+      font-family: 'Scheherazade New', serif;
+      font-size: 1.6rem;
+    }
+  </style>
+</head>
+<body id="bodyEl">
+
+<div class="slide-viewport" id="slideViewport">
+  <div class="bg-canvas bg-midnight" id="bgCanvas"></div>
+  <div class="ambient-sphere" id="ambientSphere"></div>
+  <div class="islamic-lattice" id="islamicLattice"></div>
+
+  <div class="gold-frame"></div>
+  <div class="corner top-left"></div>
+  <div class="corner top-right"></div>
+  <div class="corner bottom-left"></div>
+  <div class="corner bottom-right"></div>
+
+  <div class="top-bar">
+    <div class="badge">✨ روح پرور تلاوت • القرآن الكريم</div>
+    <div class="surah-heading" id="surahHeading">سُورَةُ الرَّحْمَٰن</div>
+  </div>
+
+  <div class="center-content">
+    <div class="status-pill" id="statusPill">آیت ۱ • تلاوت عربی</div>
+    <div class="arabic-box">
+      <div class="arabic-text" id="arabicText">الرَّحْمَٰنُ</div>
+    </div>
+    <div class="transliteration-box" id="transliterationBox" style="display: none;">
+      <div class="translit-text" id="translitText"></div>
+    </div>
+    
+    <div class="translations-container">
+      <div class="urdu-text" id="urduText"></div>
+      <div class="hindi-text" id="hindiText"></div>
+      <div class="english-text" id="englishText"></div>
+    </div>
+  </div>
+
+  <div class="audio-waveform-container" id="audioWaveformContainer">
+    <div class="waveform-bars" id="waveformBars"></div>
+  </div>
+
+  <div class="sadaqah-message-container" id="sadaqahMessageContainer" style="display: none;">
+    <div class="sadaqah-text" id="sadaqahText"></div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-left" id="footerText">🎙️ تلاوت: قاری مشاری بن راشد العفاسی</div>
+    <div class="footer-right">القرآن الكريم</div>
+  </div>
+  <div class="watermark-badge" id="watermarkBadge"></div>
+</div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const aspectParam = params.get('aspect') || '16:9';
+    const isVertical = aspectParam === '9:16' || (params.get('res') || '').includes('shorts') || (params.get('res') || '').includes('vertical');
+    const rawRes = (params.get('res') || '1080p').toLowerCase();
+
+    const RES_CONFIG = {
+      '720p': { w: 1280, h: 720, scale: 1280 / 1920, vertical: false },
+      '1080p': { w: 1920, h: 1080, scale: 1.0, vertical: false },
+      '2k': { w: 2560, h: 1440, scale: 2560 / 1920, vertical: false },
+      '4k': { w: 3840, h: 2160, scale: 3840 / 1920, vertical: false },
+      'shorts_720p': { w: 720, h: 1280, scale: 720 / 1080, vertical: true },
+      'shorts_1080p': { w: 1080, h: 1920, scale: 1.0, vertical: true },
+      'shorts_4k': { w: 2160, h: 3840, scale: 2160 / 1080, vertical: true }
+    };
+
+    let currentRes = null;
+    if (isVertical) {
+      if (rawRes.includes('720')) currentRes = RES_CONFIG['shorts_720p'];
+      else if (rawRes.includes('4k') || rawRes.includes('2160')) currentRes = RES_CONFIG['shorts_4k'];
+      else currentRes = RES_CONFIG['shorts_1080p'];
+    } else {
+      currentRes = RES_CONFIG[rawRes] || RES_CONFIG['1080p'];
+    }
+
+    const slideViewport = document.getElementById('slideViewport');
+    if (slideViewport) {
+      if (isVertical) {
+        slideViewport.classList.add('vertical-9x16');
+      }
+      document.body.style.width = currentRes.w + 'px';
+      document.body.style.height = currentRes.h + 'px';
+      slideViewport.style.transform = `scale(${currentRes.scale})`;
+    }
+
+    const surah = parseInt(params.get('surah') || '55', 10);
+    const ayah = parseInt(params.get('ayah') || '1', 10);
+    const mode = params.get('mode') || 'arabic'; // 'arabic' or 'urdu'
+    const color = params.get('color') || '#ffe600';
+    const style = params.get('style') || 'glow'; // 'glow', 'box', 'underline', 'none'
+    const bg = params.get('bg') || 'midnight';
+    const showUr = params.get('ur') !== '0';
+    const showHi = params.get('hi') !== '0';
+    const showEn = params.get('en') !== '0';
+    const qari = params.get('qari') || 'alafasy';
+
+    const fontAr = params.get('font_ar') || 'scheherazade';
+    const fontUr = params.get('font_ur') || 'nastaliq';
+    const fontHi = params.get('font_hi') || 'noto_hindi';
+    const fontEn = params.get('font_en') || 'outfit';
+
+    const FONT_MAP_AR = {
+      scheherazade: "'Scheherazade New', 'Amiri Quran', 'Amiri', 'Geeza Pro', 'Mishafi', 'Arial Unicode MS', serif",
+      amiri_quran: "'Amiri Quran', 'Amiri', 'Scheherazade New', 'Geeza Pro', 'Mishafi', 'Arial Unicode MS', serif",
+      noto_naskh: "'Noto Naskh Arabic', 'Amiri Quran', 'Geeza Pro', serif",
+      lateef: "'Lateef', 'Scheherazade New', 'Amiri', serif",
+      reem_kufi: "'Reem Kufi', sans-serif"
+    };
+    const FONT_MAP_UR = {
+      nastaliq: "'Noto Nastaliq Urdu', serif",
+      gulzar: "'Gulzar', serif",
+      amiri: "'Amiri', serif"
+    };
+    const FONT_MAP_HI = {
+      noto_hindi: "'Noto Sans Devanagari', sans-serif",
+      rozha: "'Rozha One', serif",
+      tiro_hindi: "'Tiro Devanagari Hindi', serif",
+      yatra: "'Yatra One', cursive"
+    };
+    const FONT_MAP_EN = {
+      outfit: "'Outfit', sans-serif",
+      cinzel: "'Cinzel', serif",
+      playfair: "'Playfair Display', serif",
+      lora: "'Lora', serif",
+      montserrat: "'Montserrat', sans-serif"
+    };
+
+    document.documentElement.style.setProperty('--font-arabic', FONT_MAP_AR[fontAr] || FONT_MAP_AR['scheherazade']);
+    document.documentElement.style.setProperty('--font-urdu', FONT_MAP_UR[fontUr] || FONT_MAP_UR['nastaliq']);
+    document.documentElement.style.setProperty('--font-hindi', FONT_MAP_HI[fontHi] || FONT_MAP_HI['noto_hindi']);
+    document.documentElement.style.setProperty('--font-english', FONT_MAP_EN[fontEn] || FONT_MAP_EN['outfit']);
+
+    document.documentElement.style.setProperty('--highlight-color', color);
+    document.documentElement.style.setProperty('--accent-gold', color);
+
+    // Apply Template Style Preset
+    const tplStyle = params.get('tpl_style') || params.get('template_style');
+    if (tplStyle && slideViewport) {
+      slideViewport.classList.add(`tpl-${tplStyle}`);
+    }
+
+    // Apply Background & Ambient Lighting Aura
+    const bgCanvas = document.getElementById('bgCanvas');
+    const ambientSphere = document.getElementById('ambientSphere');
+    const tplBg = params.get('template_bg');
+    const effectiveBg = tplBg || bg;
+    const validBgs = [
+      'midnight', 'twilight', 'emerald', 'rain', 'minimal',
+      'kaaba_gold', 'medina_green', 'celestial_stars', 'maghrib_dusk',
+      'aurora_serenity', 'rose_oud', 'desert_mist', 'onyx_marble'
+    ];
+    if (validBgs.includes(effectiveBg)) {
+      bgCanvas.className = `bg-canvas bg-${effectiveBg}`;
+      if (ambientSphere) {
+        if (effectiveBg === 'kaaba_gold') {
+          ambientSphere.style.background = 'radial-gradient(circle, rgba(212,175,55,0.22) 0%, transparent 70%)';
+        } else if (effectiveBg === 'medina_green') {
+          ambientSphere.style.background = 'radial-gradient(circle, rgba(16,185,129,0.22) 0%, rgba(212,175,55,0.12) 50%, transparent 70%)';
+        } else if (effectiveBg === 'celestial_stars') {
+          ambientSphere.style.background = 'radial-gradient(circle, rgba(99,102,241,0.22) 0%, rgba(56,189,248,0.12) 50%, transparent 70%)';
+        } else if (effectiveBg === 'maghrib_dusk') {
+          ambientSphere.style.background = 'radial-gradient(circle, rgba(245,158,11,0.24) 0%, rgba(225,29,72,0.14) 50%, transparent 70%)';
+        } else if (effectiveBg === 'aurora_serenity') {
+          ambientSphere.style.background = 'radial-gradient(circle, rgba(20,184,166,0.24) 0%, rgba(56,189,248,0.14) 50%, transparent 70%)';
+        } else if (effectiveBg === 'rose_oud') {
+          ambientSphere.style.background = 'radial-gradient(circle, rgba(244,63,94,0.20) 0%, rgba(212,175,55,0.12) 50%, transparent 70%)';
+        } else if (effectiveBg === 'desert_mist') {
+          ambientSphere.style.background = 'radial-gradient(circle, rgba(217,119,6,0.22) 0%, transparent 70%)';
+        } else if (effectiveBg === 'onyx_marble') {
+          ambientSphere.style.background = 'radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(212,175,55,0.14) 50%, transparent 70%)';
+        } else if (effectiveBg === 'minimal') {
+          ambientSphere.style.background = 'none';
+        }
+      }
+    } else if (effectiveBg.startsWith('http') || effectiveBg.startsWith('data:') || effectiveBg.startsWith('/') || effectiveBg.startsWith('.') || effectiveBg.includes('templates/')) {
+      bgCanvas.className = 'bg-canvas';
+      let cleanBgUrl = decodeURIComponent(effectiveBg);
+      if (!cleanBgUrl.startsWith('/') && !cleanBgUrl.startsWith('http') && !cleanBgUrl.startsWith('data:')) {
+        cleanBgUrl = '/' + cleanBgUrl;
+      }
+      const isMasterParchment = cleanBgUrl.includes('tmpl_master') || cleanBgUrl.includes('tmpl_rehl') || cleanBgUrl.includes('parchment') || cleanBgUrl.includes('papyrus');
+      if (isMasterParchment && slideViewport) {
+        slideViewport.classList.add('has-master-parchment');
+        bgCanvas.style.backgroundImage = `url("${cleanBgUrl}")`;
+        bgCanvas.style.filter = 'none';
+        bgCanvas.style.transform = 'none';
+      } else {
+        bgCanvas.style.backgroundImage = `linear-gradient(rgba(4, 7, 16, 0.35), rgba(4, 7, 16, 0.55)), url("${cleanBgUrl}")`;
+        bgCanvas.style.filter = 'none';
+        bgCanvas.style.transform = 'none';
+      }
+      bgCanvas.style.backgroundSize = 'cover';
+      bgCanvas.style.backgroundPosition = 'center';
+      bgCanvas.style.backgroundRepeat = 'no-repeat';
+    } else {
+      bgCanvas.className = 'bg-canvas';
+      bgCanvas.style.background = decodeURIComponent(effectiveBg);
+    }
+
+    // Glowing Audio Waveform Generator
+    const showWaveform = params.get('waveform') !== '0';
+    const waveformContainer = document.getElementById('audioWaveformContainer');
+    const waveformBars = document.getElementById('waveformBars');
+    if (waveformContainer && waveformBars) {
+      if (showWaveform) {
+        waveformContainer.style.display = 'flex';
+        const numBars = isVertical ? 32 : 46;
+        const barsHtml = [];
+        for (let i = 0; i < numBars; i++) {
+          const harmonic = Math.sin(i / 3.5) * 0.5 + 0.5;
+          const pseudoRandom = ((i * 17 + ayah * 7) % 10) / 10;
+          const heightPct = Math.max(15, Math.min(100, Math.round((harmonic * 0.65 + pseudoRandom * 0.35) * 100)));
+          barsHtml.push(`<div class="wave-bar" style="height: ${heightPct}%;"></div>`);
+        }
+        waveformBars.innerHTML = barsHtml.join('');
+      } else {
+        waveformContainer.style.display = 'none';
+      }
+    }
+
+    // Fetch Ayah Data from API
+    async function loadData() {
+      try {
+        const arEl = document.getElementById('arabicText');
+        const urduEl = document.getElementById('urduText');
+        const hindiEl = document.getElementById('hindiText');
+        const engEl = document.getElementById('englishText');
+
+        if (params.get('custom') === '1') {
+          const customTitle = params.get('title') || 'دعاء مبارك';
+          const customTextAr = params.get('text_ar') || '';
+          const customTextUr = params.get('text_ur') || '';
+          const customTextEn = params.get('text_en') || '';
+
+          const headingEl = document.getElementById('surahHeading');
+          if (headingEl) headingEl.innerText = customTitle;
+          const statusPill = document.getElementById('statusPill');
+          if (statusPill) statusPill.innerText = 'دعاء / تلاوة خاصة';
+          const topBadge = document.getElementById('topBadge');
+          if (topBadge) topBadge.innerText = '✨ دعاء و تلاوة مباركة';
+
+          if (arEl) {
+            arEl.innerText = customTextAr;
+            if (mode === 'arabic' && style !== 'none') arEl.classList.add(`highlight-${style}`);
+          }
+          if (showUr && customTextUr && urduEl) {
+            urduEl.innerText = customTextUr;
+            if (mode === 'urdu' && style !== 'none') urduEl.classList.add(`highlight-${style}`);
+          } else if (urduEl) {
+            urduEl.style.display = 'none';
+          }
+          if (showEn && customTextEn && engEl) {
+            engEl.innerText = `English: ${customTextEn}`;
+            if (mode === 'english' && style !== 'none') engEl.classList.add(`highlight-${style}`);
+          } else if (engEl) {
+            engEl.style.display = 'none';
+          }
+          if (hindiEl) hindiEl.style.display = 'none';
+
+          window.isSlideReady = true;
+          return;
+        }
+
+        let v = null;
+        let ch = null;
+
+        // Try local server cache first (instant)
+        try {
+          const localRes = await fetch(`/api/surah_content?surah=${surah}`);
+          if (localRes.ok) {
+            const localData = await localRes.json();
+            if (localData && localData.chapter && Array.isArray(localData.verses)) {
+              ch = localData.chapter;
+              v = localData.verses[ayah - 1];
+            }
+          }
+        } catch (e) {}
+
+        if (!v) {
+          const res = await fetch(`https://api.quran.com/api/v4/verses/by_key/${surah}:${ayah}?translations=234,97,54,151,158,819,122,20,84,85,22,19,203,95&fields=text_uthmani`);
+          const data = await res.json();
+          v = data.verse;
+          const infoRes = await fetch(`https://api.quran.com/api/v4/chapters/${surah}?language=ur`);
+          const infoData = await infoRes.json();
+          ch = infoData.chapter;
+        }
+
+        let totalVerses = parseInt(params.get('total_ayahs') || params.get('total_verses') || '0', 10);
+        if (!totalVerses && ch && ch.verses_count) {
+          totalVerses = ch.verses_count;
+        }
+
+        const totalAyatText = totalVerses ? ` • کل آیات: ${totalVerses}` : '';
+
+        if (ch) {
+          if (slideViewport && slideViewport.classList.contains('has-master-parchment')) {
+            const sAr = ch.name_arabic || '';
+            document.getElementById('surahHeading').innerText = sAr ? `سُورَةُ ${sAr}` : (ch.name_simple || `Surah ${surah}`);
+          } else {
+            const surahTitle = `${ch.name_arabic || ''} • ${ch.name_simple || 'Surah ' + surah}`;
+            document.getElementById('surahHeading').innerText = totalVerses ? `${surahTitle} (آیات: ${totalVerses})` : surahTitle;
+          }
+        }
+
+        const topBadge = document.getElementById('topBadge');
+        if (topBadge && totalVerses) {
+          topBadge.innerText = `✨ روح پرور تلاوت • کل آیات: ${totalVerses}`;
+        }
+
+        // Text elements arEl, urduEl, hindiEl, engEl already declared at top of loadData
+
+        const reqUrId = parseInt(params.get('ur_id') || '234', 10);
+        const reqEnId = parseInt(params.get('en_id') || '20', 10);
+        const transUrdu = (v.translations?.find(t => t.resource_id === reqUrId) || v.translations?.find(t => [234,97,54,151,158,819].includes(t.resource_id)))?.text || "";
+        const transHindi = v.translations?.find(t => t.resource_id === 122)?.text || "";
+        const transEnglish = (v.translations?.find(t => t.resource_id === reqEnId) || v.translations?.find(t => [20,84,85,22,19,203,95].includes(t.resource_id)))?.text || "";
+
+        const wbwParam = params.get('wbw');
+        const wordIdxParam = params.get('word_idx') ?? params.get('active_word');
+        const isWbw = wbwParam === '1' || wordIdxParam !== null;
+        const activeWordIdx = wordIdxParam !== null ? parseInt(wordIdxParam, 10) : -1;
+
+        const arWordCount = (v.wbw_words && v.wbw_words.length) || (v.text_uthmani || '').split(/\s+/).filter(Boolean).length;
+        const cleanUr = (transUrdu || '').replace(/<[^>]*>/g, '').trim();
+        const urWordCount = cleanUr.split(/\s+/).filter(Boolean).length;
+        const cleanEn = (transEnglish || '').replace(/<[^>]*>/g, '').trim();
+        const enWordCount = cleanEn.split(/\s+/).filter(Boolean).length;
+        const isParchment = slideViewport.classList.contains('has-master-parchment');
+
+        // Apply Dynamic Font Scaling to Arabic on Parchment
+        if (isParchment) {
+          if (!isVertical) {
+            let arSize = '3.6rem', arLh = '1.8';
+            if (arWordCount > 30) { arSize = '2.0rem'; arLh = '1.55'; }
+            else if (arWordCount > 22) { arSize = '2.4rem'; arLh = '1.6'; }
+            else if (arWordCount > 14) { arSize = '2.85rem'; arLh = '1.7'; }
+            else if (arWordCount > 8) { arSize = '3.25rem'; arLh = '1.75'; }
+            arEl.style.fontSize = arSize;
+            arEl.style.lineHeight = arLh;
+          } else {
+            let arSize = '3.4rem', arLh = '1.9';
+            if (arWordCount > 30) { arSize = '1.9rem'; arLh = '1.6'; }
+            else if (arWordCount > 22) { arSize = '2.3rem'; arLh = '1.65'; }
+            else if (arWordCount > 14) { arSize = '2.7rem'; arLh = '1.75'; }
+            else if (arWordCount > 8) { arSize = '3.1rem'; arLh = '1.8'; }
+            arEl.style.fontSize = arSize;
+            arEl.style.lineHeight = arLh;
+          }
+        }
+
+        if (isWbw && v.wbw_words && Array.isArray(v.wbw_words) && v.wbw_words.length > 0) {
+          // Synchronized Word-by-Word Rendering (Arabic, Urdu, English)
+          arEl.innerHTML = v.wbw_words.map((w, idx) => {
+            const isHl = (idx === activeWordIdx);
+            return `<span class="slide-wbw-word ${isHl && style !== 'none' ? `highlight-${style}` : ''}">${w.arabic}</span>`;
+          }).join(' ');
+
+          if (showUr) {
+            urduEl.innerHTML = v.wbw_words.map((w, idx) => {
+              const isHl = (idx === activeWordIdx);
+              return `<span class="slide-wbw-word ${isHl && style !== 'none' ? `highlight-${style}` : ''}">${w.urdu}</span>`;
+            }).join(' ');
+            if (isParchment) {
+              if (!isVertical) {
+                let urSize = '1.85rem', urLh = '1.65';
+                if (urWordCount > 32) { urSize = '1.3rem'; urLh = '1.45'; }
+                else if (urWordCount > 20) { urSize = '1.55rem'; urLh = '1.55'; }
+                else if (urWordCount > 10) { urSize = '1.7rem'; urLh = '1.6'; }
+                urduEl.style.fontSize = urSize;
+                urduEl.style.lineHeight = urLh;
+              } else {
+                let urSize = '2.15rem', urLh = '2.1';
+                if (urWordCount > 32) { urSize = '1.4rem'; urLh = '1.6'; }
+                else if (urWordCount > 20) { urSize = '1.7rem'; urLh = '1.8'; }
+                else if (urWordCount > 10) { urSize = '1.95rem'; urLh = '1.95'; }
+                urduEl.style.fontSize = urSize;
+                urduEl.style.lineHeight = urLh;
+              }
+              urduEl.style.color = '#7f1d1d';
+            } else {
+              urduEl.style.fontSize = isVertical ? '1.85rem' : '2.1rem';
+              urduEl.style.color = '#ffffff';
+            }
+          } else {
+            urduEl.style.display = 'none';
+          }
+
+          if (showEn) {
+            engEl.innerHTML = v.wbw_words.map((w, idx) => {
+              const isHl = (idx === activeWordIdx);
+              return `<span class="slide-wbw-word ${isHl && style !== 'none' ? `highlight-${style}` : ''}">${w.english}</span>`;
+            }).join(' ');
+            if (isParchment) {
+              if (!isVertical) {
+                let enSize = '1.05rem', enLh = '1.3';
+                if (enWordCount > 35) { enSize = '0.78rem'; enLh = '1.2'; }
+                else if (enWordCount > 22) { enSize = '0.88rem'; enLh = '1.25'; }
+                else if (enWordCount > 12) { enSize = '0.98rem'; enLh = '1.28'; }
+                engEl.style.fontSize = enSize;
+                engEl.style.lineHeight = enLh;
+              } else {
+                let enSize = '1.25rem', enLh = '1.4';
+                if (enWordCount > 35) { enSize = '0.85rem'; enLh = '1.2'; }
+                else if (enWordCount > 22) { enSize = '0.98rem'; enLh = '1.25'; }
+                else if (enWordCount > 12) { enSize = '1.12rem'; enLh = '1.32'; }
+                engEl.style.fontSize = enSize;
+                engEl.style.lineHeight = enLh;
+              }
+              engEl.style.color = '#334155';
+            } else {
+              engEl.style.fontSize = isVertical ? '1.2rem' : '1.25rem';
+              engEl.style.color = '#cbd5e1';
+            }
+            engEl.style.fontWeight = '600';
+          } else {
+            engEl.style.display = 'none';
+          }
+        } else {
+          // Standard Full Verse Mode
+          arEl.innerText = v.text_uthmani;
+          if (mode === 'arabic' && style !== 'none') {
+            arEl.classList.add(`highlight-${style}`);
+          }
+
+          if (showUr && transUrdu) {
+            const urWords = cleanUr.split(/\s+/);
+            const urWordParam = params.get('ur_word');
+            if (urWordParam !== null && mode === 'urdu') {
+              const activeIdx = parseInt(urWordParam, 10);
+              urduEl.innerHTML = urWords.map((w, idx) => {
+                const isHl = (idx === activeIdx);
+                return `<span class="${isHl && style !== 'none' ? `highlight-${style}` : ''}">${w}</span>`;
+              }).join(' ');
+            } else {
+              urduEl.innerText = cleanUr;
+              if (mode === 'urdu' && style !== 'none') {
+                urduEl.classList.add(`highlight-${style}`);
+              }
+            }
+            if (isParchment) {
+              if (!isVertical) {
+                let urSize = '1.85rem', urLh = '1.65';
+                if (urWordCount > 32) { urSize = '1.3rem'; urLh = '1.45'; }
+                else if (urWordCount > 20) { urSize = '1.55rem'; urLh = '1.55'; }
+                else if (urWordCount > 10) { urSize = '1.7rem'; urLh = '1.6'; }
+                urduEl.style.fontSize = urSize;
+                urduEl.style.lineHeight = urLh;
+              } else {
+                let urSize = '2.15rem', urLh = '2.1';
+                if (urWordCount > 32) { urSize = '1.4rem'; urLh = '1.6'; }
+                else if (urWordCount > 20) { urSize = '1.7rem'; urLh = '1.8'; }
+                else if (urWordCount > 10) { urSize = '1.95rem'; urLh = '1.95'; }
+                urduEl.style.fontSize = urSize;
+                urduEl.style.lineHeight = urLh;
+              }
+              urduEl.style.color = '#7f1d1d';
+            } else {
+              urduEl.style.fontSize = isVertical ? '1.85rem' : '2.1rem';
+              urduEl.style.color = '#ffffff';
+            }
+          } else {
+            urduEl.style.display = 'none';
+          }
+
+          if (showEn && transEnglish) {
+            engEl.innerText = `English: ${cleanEn}`;
+            if (mode === 'english' && style !== 'none') {
+              engEl.classList.add(`highlight-${style}`);
+            }
+            if (isParchment) {
+              if (!isVertical) {
+                let enSize = '1.05rem', enLh = '1.3';
+                if (enWordCount > 35) { enSize = '0.78rem'; enLh = '1.2'; }
+                else if (enWordCount > 22) { enSize = '0.88rem'; enLh = '1.25'; }
+                else if (enWordCount > 12) { enSize = '0.98rem'; enLh = '1.28'; }
+                engEl.style.fontSize = enSize;
+                engEl.style.lineHeight = enLh;
+              } else {
+                let enSize = '1.25rem', enLh = '1.4';
+                if (enWordCount > 35) { enSize = '0.85rem'; enLh = '1.2'; }
+                else if (enWordCount > 22) { enSize = '0.98rem'; enLh = '1.25'; }
+                else if (enWordCount > 12) { enSize = '1.12rem'; enLh = '1.32'; }
+                engEl.style.fontSize = enSize;
+                engEl.style.lineHeight = enLh;
+              }
+              engEl.style.color = '#334155';
+            } else {
+              engEl.style.fontSize = isVertical ? '1.2rem' : '1.25rem';
+              engEl.style.color = '#cbd5e1';
+            }
+            engEl.style.fontWeight = '600';
+          } else {
+            engEl.style.display = 'none';
+          }
+        }
+
+        // Dynamic Highlighting Functions for Ultra-Fast CDP Capture
+        window.highlightWord = function(newIdx) {
+          const hlClass = (style && style !== 'none') ? `highlight-${style}` : 'highlight-glow';
+          const arSpans = arEl.querySelectorAll('.slide-wbw-word');
+          arSpans.forEach((sp, i) => {
+            if (i === newIdx) sp.className = `slide-wbw-word ${hlClass}`;
+            else sp.className = 'slide-wbw-word';
+          });
+          const urSpans = urduEl.querySelectorAll('.slide-wbw-word');
+          urSpans.forEach((sp, i) => {
+            if (i === newIdx) sp.className = `slide-wbw-word ${hlClass}`;
+            else sp.className = 'slide-wbw-word';
+          });
+          const enSpans = engEl.querySelectorAll('.slide-wbw-word');
+          enSpans.forEach((sp, i) => {
+            if (i === newIdx) sp.className = `slide-wbw-word ${hlClass}`;
+            else sp.className = 'slide-wbw-word';
+          });
+          return true;
+        };
+
+        window.highlightUrduWord = function(newIdx) {
+          const hlClass = (style && style !== 'none') ? `highlight-${style}` : 'highlight-glow';
+          const spans = urduEl.querySelectorAll('span');
+          spans.forEach((sp, i) => {
+            if (i === newIdx) sp.className = hlClass;
+            else sp.className = '';
+          });
+          return true;
+        };
+
+        if (showHi && transHindi) {
+          hindiEl.innerText = `हिन्दी: ${transHindi.replace(/<[^>]*>/g, '')}`;
+        } else {
+          hindiEl.style.display = 'none';
+        }
+
+        // Roman Transliteration
+        const showTranslit = params.get('translit') === '1';
+        if (showTranslit) {
+          let translitStr = '';
+          if (v.words && Array.isArray(v.words)) {
+            translitStr = v.words.map(w => w.transliteration?.text || '').filter(Boolean).join(' ');
+          }
+          if (!translitStr) {
+            try {
+              const tRes = await fetch(`https://api.quran.com/api/v4/verses/by_key/${surah}:${ayah}?words=true&word_fields=transliteration`);
+              if (tRes.ok) {
+                const tData = await tRes.json();
+                const tWords = tData.verse?.words || [];
+                translitStr = tWords.map(w => w.transliteration?.text || '').filter(Boolean).join(' ');
+              }
+            } catch (e) {}
+          }
+          if (translitStr) {
+            const translitBox = document.getElementById('transliterationBox');
+            const translitText = document.getElementById('translitText');
+            if (translitBox && translitText) {
+              translitText.innerText = translitStr;
+              translitBox.style.display = 'block';
+            }
+          }
+        }
+
+        let modeLabel = 'تلاوت عربی';
+        if (mode === 'urdu') modeLabel = 'اردو ترجمہ';
+        else if (mode === 'english') modeLabel = 'English Translation';
+
+        const ayahDisplay = totalVerses ? `آیت: ${ayah} / ${totalVerses}` : `آیت: ${ayah}`;
+        document.getElementById('statusPill').innerText = `${ayahDisplay}${totalAyatText} • ${modeLabel}`;
+        document.getElementById('footerText').innerText = `🎙️ تلاوت: ${qari.toUpperCase()} • ${ayahDisplay}${totalAyatText}`;
+
+        // Watermark Badge
+        const wmParam = params.get('watermark');
+        if (wmParam) {
+          const wm = document.getElementById('watermarkBadge');
+          if (wm) {
+            wm.innerText = decodeURIComponent(wmParam);
+            wm.style.display = 'block';
+          }
+        }
+
+        // Apply Custom Layout if saved for this template
+        function hexToRgba(hex, alpha) {
+          if (!hex || hex === 'transparent') return 'transparent';
+          let c = hex.replace('#', '');
+          if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+          const num = parseInt(c, 16);
+          const r = (num >> 16) & 255;
+          const g = (num >> 8) & 255;
+          const b = num & 255;
+          return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        let tplId = params.get('tpl_id') || params.get('template_id') || '';
+        if (!tplId && effectiveBg) {
+          const m = effectiveBg.match(/(tmpl_[a-zA-Z0-9_]+|c[0-9]+_[a-zA-Z0-9_]+)/);
+          if (m) tplId = m[1];
+        }
+        if (tplId) {
+          try {
+            const lRes = await fetch(`/api/layout/get?template_id=${tplId}`);
+            if (lRes.ok) {
+              const lData = await lRes.json();
+              const ratioKey = isVertical ? '9:16' : '16:9';
+              if (lData && lData.template_layout && lData.template_layout[ratioKey]) {
+                const cfg = lData.template_layout[ratioKey];
+                const arBox = document.querySelector('.arabic-box');
+                const waveCont = document.getElementById('audioWaveformContainer');
+
+                if (cfg.arabic && arBox) {
+                  arBox.style.position = 'absolute';
+                  arBox.style.top = `${cfg.arabic.top}%`;
+                  arBox.style.left = `${cfg.arabic.left}%`;
+                  arBox.style.width = `${cfg.arabic.width}%`;
+                  arBox.style.height = `${cfg.arabic.height}%`;
+                  arBox.style.display = 'flex';
+                  arBox.style.alignItems = 'center';
+                  arBox.style.justifyContent = 'center';
+                  arBox.style.zIndex = '20';
+                  if (cfg.arabic.color) arEl.style.color = cfg.arabic.color;
+                  if (cfg.arabic.textAlign) arEl.style.textAlign = cfg.arabic.textAlign;
+                  if (cfg.arabic.fontWeight) arEl.style.fontWeight = cfg.arabic.fontWeight;
+                  if (cfg.arabic.lineHeight) arEl.style.lineHeight = cfg.arabic.lineHeight;
+                  if (cfg.arabic.padding) arBox.style.padding = `${cfg.arabic.padding}px`;
+                  if (cfg.arabic.bgColor && cfg.arabic.bgOpacity > 0) {
+                    arBox.style.backgroundColor = hexToRgba(cfg.arabic.bgColor, cfg.arabic.bgOpacity / 100);
+                    arBox.style.borderRadius = `${cfg.arabic.radius || 8}px`;
+                  }
+                }
+
+                if (cfg.urdu && urduEl) {
+                  if (cfg.urdu.top !== undefined && cfg.urdu.left !== undefined) {
+                    urduEl.style.position = 'absolute';
+                    urduEl.style.top = `${cfg.urdu.top}%`;
+                    urduEl.style.left = `${cfg.urdu.left}%`;
+                    urduEl.style.width = `${cfg.urdu.width}%`;
+                    urduEl.style.height = `${cfg.urdu.height}%`;
+                    urduEl.style.display = 'flex';
+                    urduEl.style.alignItems = 'center';
+                    urduEl.style.justifyContent = 'center';
+                    urduEl.style.zIndex = '20';
+                  }
+                  if (cfg.urdu.color) urduEl.style.color = cfg.urdu.color;
+                  if (cfg.urdu.textAlign) urduEl.style.textAlign = cfg.urdu.textAlign;
+                  if (cfg.urdu.fontWeight) urduEl.style.fontWeight = cfg.urdu.fontWeight;
+                  if (cfg.urdu.lineHeight) urduEl.style.lineHeight = cfg.urdu.lineHeight;
+                  if (cfg.urdu.padding) urduEl.style.padding = `${cfg.urdu.padding}px`;
+                  if (cfg.urdu.bgColor && cfg.urdu.bgOpacity > 0) {
+                    urduEl.style.backgroundColor = hexToRgba(cfg.urdu.bgColor, cfg.urdu.bgOpacity / 100);
+                    urduEl.style.borderRadius = `${cfg.urdu.radius || 8}px`;
+                  }
+                }
+
+                if (cfg.english && engEl) {
+                  if (cfg.english.top !== undefined && cfg.english.left !== undefined) {
+                    engEl.style.position = 'absolute';
+                    engEl.style.top = `${cfg.english.top}%`;
+                    engEl.style.left = `${cfg.english.left}%`;
+                    engEl.style.width = `${cfg.english.width}%`;
+                    engEl.style.height = `${cfg.english.height}%`;
+                    engEl.style.display = 'flex';
+                    engEl.style.alignItems = 'center';
+                    engEl.style.justifyContent = 'center';
+                    engEl.style.zIndex = '20';
+                  }
+                  if (cfg.english.color) engEl.style.color = cfg.english.color;
+                  if (cfg.english.textAlign) engEl.style.textAlign = cfg.english.textAlign;
+                  if (cfg.english.fontWeight) engEl.style.fontWeight = cfg.english.fontWeight;
+                  if (cfg.english.lineHeight) engEl.style.lineHeight = cfg.english.lineHeight;
+                  if (cfg.english.padding) engEl.style.padding = `${cfg.english.padding}px`;
+                  if (cfg.english.bgColor && cfg.english.bgOpacity > 0) {
+                    engEl.style.backgroundColor = hexToRgba(cfg.english.bgColor, cfg.english.bgOpacity / 100);
+                    engEl.style.borderRadius = `${cfg.english.radius || 8}px`;
+                  }
+                }
+
+                if (cfg.waveform && waveCont) {
+                  waveCont.style.position = 'absolute';
+                  waveCont.style.top = `${cfg.waveform.top}%`;
+                  waveCont.style.left = `${cfg.waveform.left}%`;
+                  waveCont.style.width = `${cfg.waveform.width}%`;
+                  waveCont.style.height = `${cfg.waveform.height}%`;
+                  waveCont.style.transform = 'none';
+                  waveCont.style.zIndex = '18';
+                  if (cfg.waveform.bgColor && cfg.waveform.bgOpacity > 0) {
+                    waveCont.style.backgroundColor = hexToRgba(cfg.waveform.bgColor, cfg.waveform.bgOpacity / 100);
+                    waveCont.style.borderRadius = `${cfg.waveform.radius || 6}px`;
+                  }
+                }
+
+                const sadaqahBox = document.getElementById('sadaqahMessageContainer');
+                if (cfg.sadaqah && sadaqahBox) {
+                  sadaqahBox.style.position = 'absolute';
+                  sadaqahBox.style.top = `${cfg.sadaqah.top}%`;
+                  sadaqahBox.style.left = `${cfg.sadaqah.left}%`;
+                  sadaqahBox.style.width = `${cfg.sadaqah.width}%`;
+                  sadaqahBox.style.height = `${cfg.sadaqah.height}%`;
+                  sadaqahBox.style.transform = 'none';
+                  sadaqahBox.style.zIndex = '22';
+                  if (cfg.sadaqah.bgColor && cfg.sadaqah.bgOpacity > 0) {
+                    sadaqahBox.style.backgroundColor = hexToRgba(cfg.sadaqah.bgColor, cfg.sadaqah.bgOpacity / 100);
+                  }
+                  if (cfg.sadaqah.radius) {
+                    sadaqahBox.style.borderRadius = `${cfg.sadaqah.radius}px`;
+                  }
+                }
+              }
+            }
+          } catch (e) {}
+        }
+
+        // Load Per-Surah Configuration (Waveform + Urdu Sadaqah Message)
+        try {
+          const cfgRes = await fetch(`/api/surah_configs?surah=${surah}`);
+          if (cfgRes.ok) {
+            const cfgData = await cfgRes.json();
+            const sCfg = cfgData.config || {};
+            
+            // Sadaqah Message rendering
+            const sadaqahContainer = document.getElementById('sadaqahMessageContainer');
+            const sadaqahTextEl = document.getElementById('sadaqahText');
+            if (sadaqahContainer && sadaqahTextEl && sCfg.sadaqah && sCfg.sadaqah.enabled !== false && sCfg.sadaqah.text) {
+              sadaqahTextEl.innerText = sCfg.sadaqah.text;
+              if (sCfg.sadaqah.color) sadaqahTextEl.style.color = sCfg.sadaqah.color;
+              if (sCfg.sadaqah.font_size) {
+                const baseFs = isVertical ? (sCfg.sadaqah.font_size * 0.95) : sCfg.sadaqah.font_size;
+                sadaqahTextEl.style.fontSize = `${baseFs}px`;
+              }
+              if (sCfg.sadaqah.font) {
+                sadaqahTextEl.style.fontFamily = FONT_MAP_UR[sCfg.sadaqah.font] || FONT_MAP_UR['nastaliq'];
+              }
+              if (sCfg.sadaqah.align) sadaqahTextEl.style.textAlign = sCfg.sadaqah.align;
+              if (sCfg.sadaqah.bold) sadaqahTextEl.style.fontWeight = 'bold';
+              if (sCfg.sadaqah.line_height) sadaqahTextEl.style.lineHeight = sCfg.sadaqah.line_height;
+              
+              if (sCfg.sadaqah.bg_color) {
+                const op = sCfg.sadaqah.bg_opacity !== undefined ? sCfg.sadaqah.bg_opacity / 100 : 0.72;
+                sadaqahContainer.style.backgroundColor = hexToRgba(sCfg.sadaqah.bg_color, op);
+              }
+              if (sCfg.sadaqah.border_color) {
+                sadaqahContainer.style.border = `${sCfg.sadaqah.border_width || 1}px solid ${sCfg.sadaqah.border_color}`;
+              }
+              if (sCfg.sadaqah.border_radius) {
+                sadaqahContainer.style.borderRadius = `${sCfg.sadaqah.border_radius}px`;
+              }
+              if (sCfg.sadaqah.shadow) {
+                sadaqahContainer.style.boxShadow = '0 4px 18px rgba(0,0,0,0.65)';
+              }
+              sadaqahContainer.style.display = 'flex';
+            } else if (sadaqahContainer) {
+              sadaqahContainer.style.display = 'none';
+            }
+
+            // Waveform style customization
+            const waveCont = document.getElementById('audioWaveformContainer');
+            const waveBars = document.getElementById('waveformBars');
+            if (sCfg.waveform && sCfg.waveform.enabled === false && waveCont) {
+              waveCont.style.display = 'none';
+            } else if (sCfg.waveform && waveBars) {
+              if (sCfg.waveform.color) {
+                waveBars.querySelectorAll('.wave-bar').forEach(bar => {
+                  bar.style.background = sCfg.waveform.color;
+                  if (sCfg.waveform.glow) {
+                    bar.style.boxShadow = `0 0 10px ${sCfg.waveform.color}`;
+                  }
+                });
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("Could not load surah config for slide:", e);
+        }
+
+        // Ensure web fonts are fully rendered before capturing screenshot
+        try {
+          if (document.fonts && document.fonts.ready) {
+            await document.fonts.ready;
+          }
+        } catch (fontErr) {}
+        await new Promise(r => setTimeout(r, 60));
+
+        // Signal ready for screenshot
+        window.slideReady = true;
+      } catch (e) {
+        console.error("Error loading slide:", e);
+      }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "items": [
+    {
+      "type": "wbw",
+      "url": "http://localhost:8765/video_render/render_studio_slide.html?surah=67&ayah=1&mode=arabic&color=%23ffe600&style=glow&bg=/templates/images/tmpl_ai_kaaba_night_pure_16x9.jpg&template_id=tmpl_ai_kaaba_night_pure&ur=1&en=1&wbw=1",
+      "base_out": "/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/test_ai_kaaba_base.png",
+      "word_outs": [
+        [0, "/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/test_ai_kaaba_w0.png"]
+      ]
+    }
+  ]
+}

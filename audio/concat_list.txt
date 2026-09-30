@@ -1,0 +1,7 @@
+file '/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/audio/hani/001001.mp3'
+file '/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/audio/hani/001002.mp3'
+file '/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/audio/hani/001003.mp3'
+file '/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/audio/hani/001004.mp3'
+file '/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/audio/hani/001005.mp3'
+file '/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/audio/hani/001006.mp3'
+file '/Users/shaddo/.gemini/antigravity/scratch/surah_fatiha/audio/hani/001007.mp3'

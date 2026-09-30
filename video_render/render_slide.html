@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8">
+  <title>Surah Al-Fatihah Video Slide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@500;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #04060a;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 70px 100px;
+    }
+
+    /* Cinematic Deep Space / Sanctuary Background */
+    .bg {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: radial-gradient(ellipse at 50% 25%, #151a30 0%, #070913 50%, #020306 100%);
+    }
+
+    .ambient-sphere {
+      position: absolute;
+      width: 1100px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.09) 0%, rgba(99, 102, 241, 0.06) 50%, transparent 70%);
+      top: 20%;
+      left: calc(50% - 550px);
+      filter: blur(80px);
+    }
+
+    /* Subtle luxury frame */
+    .gold-frame {
+      position: absolute;
+      inset: 35px;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 20px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .gold-frame::after {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.12);
+      border-radius: 14px;
+    }
+
+    /* Corner ornate accents */
+    .corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 2px solid #d4af37;
+      z-index: 2;
+    }
+    .top-left { top: 35px; left: 35px; border-right: none; border-bottom: none; border-top-left-radius: 20px; }
+    .top-right { top: 35px; right: 35px; border-left: none; border-bottom: none; border-top-right-radius: 20px; }
+    .bottom-left { bottom: 35px; left: 35px; border-right: none; border-top: none; border-bottom-left-radius: 20px; }
+    .bottom-right { bottom: 35px; right: 35px; border-left: none; border-top: none; border-bottom-right-radius: 20px; }
+
+    /* Top Bar */
+    .top-bar {
+      text-align: center;
+      z-index: 10;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 24px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 50px;
+      color: #fef08a;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .surah-heading {
+      font-family: 'Amiri', serif;
+      font-size: 2.8rem;
+      color: #fff;
+      text-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+      margin-bottom: 4px;
+    }
+
+    /* Center Main Content */
+    .center-content {
+      width: 100%;
+      max-width: 1600px;
+      text-align: center;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 20px 40px;
+    }
+
+    .ayah-indicator {
+      font-size: 1.15rem;
+      color: #d4af37;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 6px 20px;
+      border-radius: 30px;
+      margin-bottom: 35px;
+      letter-spacing: 1px;
+    }
+
+    .arabic-text {
+      font-family: 'Amiri', serif;
+      font-size: 4.8rem;
+      line-height: 1.9;
+      color: #ffffff;
+      text-shadow: 0 0 35px rgba(212, 175, 55, 0.5), 0 5px 20px rgba(0,0,0,0.9);
+      direction: rtl;
+      margin-bottom: 35px;
+      max-width: 1450px;
+    }
+
+    .urdu-text {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 2.4rem;
+      line-height: 2.5;
+      color: #e2e8f0;
+      direction: rtl;
+      text-shadow: 0 3px 15px rgba(0,0,0,0.95);
+      margin-bottom: 22px;
+      max-width: 1450px;
+    }
+
+    .english-text {
+      font-size: 1.25rem;
+      color: #94a3b8;
+      font-style: italic;
+      font-weight: 300;
+      max-width: 1200px;
+      direction: ltr;
+    }
+
+    /* Footer */
+    .footer-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      color: #64748b;
+      font-size: 1.05rem;
+      letter-spacing: 1px;
+      padding: 0 30px;
+    }
+
+    .footer-left {
+      color: #cbd5e1;
+    }
+
+    .footer-right {
+      color: #d4af37;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg"></div>
+  <div class="ambient-sphere"></div>
+
+  <div class="gold-frame"></div>
+  <div class="corner top-left"></div>
+  <div class="corner top-right"></div>
+  <div class="corner bottom-left"></div>
+  <div class="corner bottom-right"></div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="badge">✨ Pure Peace Recitation • روح پرور تلاوت</div>
+    <div class="surah-heading">سُورَةُ الفَاتِحَة • SURAH AL-FATIHAH</div>
+  </div>
+
+  <!-- Center Content -->
+  <div class="center-content">
+    <div class="ayah-indicator" id="ayahBadge">آیت ۱ / ۷ • AYAH 1 OF 7</div>
+    <div class="arabic-text" id="arabicText">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>
+    <div class="urdu-text" id="urduText">شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے</div>
+    <div class="english-text" id="englishText">In the name of Allah, the Entirely Merciful, the Especially Merciful.</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-bar">
+    <div class="footer-left">🎙️ Reciter: Qari Hani Ar-Rifai • Soulful & Peaceful</div>
+    <div class="footer-right">🌙 Al-Quran Al-Kareem</div>
+  </div>
+
+  <script>
+    const verses = [
+      {
+        id: 1,
+        arabic: "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+        urdu: "شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے",
+        english: "In the name of Allah, the Entirely Merciful, the Especially Merciful."
+      },
+      {
+        id: 2,
+        arabic: "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ",
+        urdu: "سب طرح کی تعریف خدا ہی کو (سزاوار) ہے جو تمام مخلوقات کا پروردگار ہے",
+        english: "[All] praise is [due] to Allah, Lord of the worlds -"
+      },
+      {
+        id: 3,
+        arabic: "ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+        urdu: "بڑا مہربان نہایت رحم والا",
+        english: "The Entirely Merciful, the Especially Merciful,"
+      },
+      {
+        id: 4,
+        arabic: "مَـٰلِكِ يَوْمِ ٱلدِّينِ",
+        urdu: "انصاف کے دن کا حاکم",
+        english: "Sovereign of the Day of Recompense."
+      },
+      {
+        id: 5,
+        arabic: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+        urdu: "(اے پروردگار) ہم تیری ہی عبادت کرتے ہیں اور تجھ ہی سے مدد مانگتے ہیں",
+        english: "It is You we worship and You we ask for help."
+      },
+      {
+        id: 6,
+        arabic: "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ",
+        urdu: "ہم کو سیدھے رستے چلا",
+        english: "Guide us to the straight path -"
+      },
+      {
+        id: 7,
+        arabic: "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ",
+        urdu: "ان لوگوں کے رستے جن پر تو اپنا فضل وکرم کرتا رہا نہ ان کے جن پر غصے ہوتا رہا اور نہ گمراہوں کے",
+        english: "The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray."
+      }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const ayahNum = parseInt(params.get('ayah') || '1', 10);
+    const v = verses[ayahNum - 1] || verses[0];
+
+    document.getElementById('ayahBadge').innerText = `آیت ${v.id} / 7 • AYAH ${v.id} OF 7`;
+    document.getElementById('arabicText').innerText = v.arabic;
+    document.getElementById('urduText').innerText = v.urdu;
+    document.getElementById('englishText').innerText = v.english;
+
+    // Adjust font size for longer ayah 7
+    if (v.id === 7) {
+      document.getElementById('arabicText').style.fontSize = '3.8rem';
+      document.getElementById('urduText').style.fontSize = '2.0rem';
+    }
+  </script>
+</body>
+</html>
