@@ -4361,6 +4361,11 @@
           <div style="background: rgba(0,0,0,0.4); height: 6px; border-radius: 3px; overflow: hidden; margin-top: 10px;">
             <div id="singleProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #d4af37); transition: width 0.3s;"></div>
           </div>
+          <div style="margin-top: 10px;">
+            <button id="btnCancelSingleRender" type="button" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; font-size: 0.82rem; font-weight: 600; padding: 5px 14px; border-radius: 6px; cursor: pointer;">
+              🛑 Stop & Cancel Export
+            </button>
+          </div>
         </div>
 
         <!-- Result Card Single -->
@@ -4662,7 +4667,12 @@
             <div style="font-weight: 700; color: #38bdf8; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
               <span class="pulse-dot"></span> ⚡ Live Parallel Process Monitor
             </div>
-            <div id="batchOverallStats" style="font-size: 0.8rem; color: #cbd5e1;">0 / 0 Completed</div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div id="batchOverallStats" style="font-size: 0.8rem; color: #cbd5e1;">0 / 0 Completed</div>
+              <button id="btnCancelBatchRender" type="button" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 5px; cursor: pointer;">
+                🛑 Stop Batch
+              </button>
+            </div>
           </div>
 
           <!-- Overall Progress Bar -->
@@ -8664,6 +8674,21 @@
         const data = await res.json();
         const jobId = data.job_id;
 
+        // Wire up cancel button
+        const btnCancelSingleRender = document.getElementById('btnCancelSingleRender');
+        if (btnCancelSingleRender) {
+          btnCancelSingleRender.onclick = async () => {
+            clearInterval(pollInterval);
+            try {
+              await fetch(`/api/cancel_render?job_id=${jobId}`);
+            } catch (e) {}
+            if (renderProgressBox) renderProgressBox.style.display = 'none';
+            startRenderBtn.disabled = false;
+            startRenderBtn.style.opacity = '1';
+            showToast('🛑 Video export was stopped.', 'info');
+          };
+        }
+
         // Poll video status with rich telemetry
         const pollInterval = setInterval(async () => {
           try {
@@ -8681,6 +8706,12 @@
                 const timeMsg = st.elapsed_sec ? `<span>⏱️ Elapsed: ${st.elapsed_sec}s ${st.eta_sec ? '• ⏳ ETA: ' + st.eta_sec + 's' : ''}</span>` : '';
                 renderTelemetryRow.innerHTML = `${itemMsg} ${ayahMsg} ${timeMsg}`;
               }
+            } else if (sData.status === 'cancelled') {
+              clearInterval(pollInterval);
+              if (renderProgressBox) renderProgressBox.style.display = 'none';
+              startRenderBtn.disabled = false;
+              startRenderBtn.style.opacity = '1';
+              showToast('🛑 Video export cancelled.', 'info');
             } else if (sData.status === 'completed') {
               clearInterval(pollInterval);
               if (renderProgressBox) renderProgressBox.style.display = 'none';
@@ -8796,11 +8827,35 @@
           const bResp = await res.json();
           const batchId = bResp.batch_id;
 
+          // Wire up batch cancel button
+          const btnCancelBatchRender = document.getElementById('btnCancelBatchRender');
+          if (btnCancelBatchRender) {
+            btnCancelBatchRender.onclick = async () => {
+              clearInterval(batchInterval);
+              try {
+                await fetch(`/api/cancel_batch?batch_id=${batchId}`);
+              } catch (e) {}
+              startBatchRenderBtn.disabled = false;
+              startBatchRenderBtn.style.opacity = '1';
+              if (batchOverallStats) batchOverallStats.innerText = '🛑 Batch stopped by user';
+              showToast('🛑 Batch export cancelled.', 'info');
+            };
+          }
+
           // Poll Batch Status with Granular Stats
           const batchInterval = setInterval(async () => {
             try {
               const bRes = await fetch(`/api/batch_status?batch_id=${batchId}`);
               const bData = await bRes.json();
+
+              if (bData.status === 'cancelled') {
+                clearInterval(batchInterval);
+                startBatchRenderBtn.disabled = false;
+                startBatchRenderBtn.style.opacity = '1';
+                if (batchOverallStats) batchOverallStats.innerText = '🛑 Batch stopped by user';
+                showToast('🛑 Batch export was stopped.', 'info');
+                return;
+              }
 
               if (batchOverallStats) {
                 batchOverallStats.innerText = `Completed: ${bData.completed} / ${bData.total} • Active: ${bData.processing} • Queued: ${bData.pending}`;

@@ -115,7 +115,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDe
         <body>
             <div class="spinner"></div>
             <h1>القرآن الكريم</h1>
-            <div class="gold-sub">✨ Quran Video Studio v1.3 (Professional Edition)</div>
+            <div class="gold-sub">✨ Quran Video Studio v1.4.0 (Professional Edition)</div>
             <p>اسٹوڈیو لوڈ ہو رہا ہے، برائے مہربانی چند سیکنڈ انتظار فرمائیں...</p>
         </body>
         </html>
@@ -137,7 +137,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDe
             backing: .buffered,
             defer: false
         )
-        window.title = "القرآن الكريم • Quran Video Studio v1.3 (Professional Edition)"
+        window.title = "القرآن الكريم • Quran Video Studio v1.4.0 (Professional Edition)"
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
         window.backgroundColor = NSColor(red: 4/255, green: 6/255, blue: 11/255, alpha: 1.0)
@@ -166,7 +166,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDe
         NSApp.mainMenu = menubar
 
         let appMenu = NSMenu()
-        let appName = "Quran Video Studio v1.4"
+        let appName = "Quran Video Studio v1.4.0"
         appMenu.addItem(NSMenuItem(title: "About \(appName)", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: ""))
         appMenu.addItem(NSMenuItem.separator())
         appMenu.addItem(NSMenuItem(title: "Quit \(appName)", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
@@ -251,7 +251,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDe
 
 
     func applicationWillTerminate(_ notification: Notification) {
-        serverProcess?.terminate()
+        if let proc = serverProcess {
+            proc.terminate()
+        }
+        let cleanupTask = Process()
+        cleanupTask.executableURL = URL(fileURLWithPath: "/bin/bash")
+        cleanupTask.arguments = ["-c", "curl -s http://localhost:8765/api/stop_render 2>/dev/null; pkill -9 -f 'render_slides_fast.mjs' 2>/dev/null; pkill -9 -f 'Chrome-headless' 2>/dev/null; pkill -9 -f 'Chrome.*94[0-9]{2}' 2>/dev/null"]
+        try? cleanupTask.run()
     }
 }
 

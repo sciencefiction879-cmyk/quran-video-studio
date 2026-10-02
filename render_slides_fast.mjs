@@ -39,12 +39,21 @@ async function main() {
     '--disable-dev-shm-usage',
     '--no-sandbox',
     '--mute-audio',
+    '--no-first-run',
+    '--no-default-browser-check',
+    '--no-startup-window',
+    '--disable-extensions',
+    '--disable-background-networking',
+    '--disable-sync',
+    '--disable-features=Translate,OptimizationHints,MediaRouter',
     `--remote-debugging-port=${debugPort}`,
     `--user-data-dir=${userDir}`,
     `--window-size=${width},${height}`
   ];
 
-  const chromeProc = spawn(chromePath, chromeArgs);
+  const chromeProc = spawn(chromePath, chromeArgs, {
+    env: { ...process.env, LSUIElement: '1' }
+  });
 
   // Clean up on exit
   function cleanup() {

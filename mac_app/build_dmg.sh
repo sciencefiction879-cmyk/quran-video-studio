@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASE_DIR="$( cd "$DIR/.." && pwd )"
 CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
-echo "=== Building Quran Video Studio macOS App & DMG v1.3 ==="
+echo "=== Building Quran Video Studio macOS App & DMG v1.4.0 ==="
 
 # 1. Generate AppIcon.icns
 echo "--> Generating App Icon..."
@@ -85,7 +85,7 @@ ln -s /Applications "$DMG_ROOT/Applications"
 DMG_OUT="$BASE_DIR/QuranVideoStudio.dmg"
 rm -f "$DMG_OUT"
 
-hdiutil create -volname "Quran Video Studio v1.3" -srcfolder "$DMG_ROOT" -ov -format UDZO "$DMG_OUT"
+hdiutil create -volname "Quran Video Studio v1.4.0" -srcfolder "$DMG_ROOT" -ov -format UDZO "$DMG_OUT"
 rm -rf "$DMG_ROOT"
 xattr -cr "$DMG_OUT" 2>/dev/null || true
 

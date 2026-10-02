@@ -8,7 +8,7 @@ extra_paths = ["/opt/homebrew/bin", "/opt/homebrew/sbin", "/usr/local/bin", "/us
 current_path = os.environ.get("PATH", "")
 os.environ["PATH"] = ":".join([p for p in extra_paths if p not in current_path]) + ":" + current_path
 
-from studio_video_generator import generate_video, generate_custom_video, generate_thumbnail, format_timestamp, compile_bulk_metadata, BASE_DIR, OUT_DIR, SURAH_NAMES, RECITER_PREFIXES
+from studio_video_generator import generate_video, generate_custom_video, generate_thumbnail, format_timestamp, compile_bulk_metadata, kill_all_render_procs, BASE_DIR, OUT_DIR, SURAH_NAMES, RECITER_PREFIXES
 from template_manager import load_templates_catalog, get_template_by_id, auto_split_custom_collage
 from wbw_aligner import get_wbw_surah_content, fetch_qari_segments, QDC_RECITATION_MAP
 import audio_dsp_engine
@@ -221,9 +221,27 @@ SURAH_ARABIC_NAMES = {
 
 JOBS = {}
 BATCH_JOBS = {}
+CANCELLED_JOBS = set()
 CUSTOM_DIRS = set()
 ACTIVITY_LOGS = []
 LOG_LOCK = threading.Lock()
+
+def cancel_all_render_jobs():
+    """Cancels all active jobs and kills any rendering subprocesses."""
+    global CANCELLED_JOBS
+    for j_id in list(JOBS.keys()):
+        if JOBS[j_id].get("status") in ("processing", "queued"):
+            JOBS[j_id]["status"] = "cancelled"
+            JOBS[j_id]["progress"] = "Render cancelled by user"
+            CANCELLED_JOBS.add(j_id)
+    for b_id in list(BATCH_JOBS.keys()):
+        if BATCH_JOBS[b_id].get("status") in ("processing", "pending"):
+            BATCH_JOBS[b_id]["status"] = "cancelled"
+            for j_id, j_obj in BATCH_JOBS[b_id].get("jobs", {}).items():
+                if j_obj.get("status") in ("processing", "queued"):
+                    j_obj["status"] = "cancelled"
+                    CANCELLED_JOBS.add(j_id)
+    kill_all_render_procs()
 
 def log_activity(level, category, message, solution=""):
     with LOG_LOCK:
@@ -584,6 +602,34 @@ May Allah bless everyone who listens and shares this recitation. Ameen.
             self.wfile.write(json.dumps(res).encode())
             return
 
+        if path in ["/api/cancel_render", "/api/cancel_job", "/api/stop_render"]:
+            job_id = query.get("job_id", [None])[0] or query.get("id", [None])[0]
+            if job_id:
+                CANCELLED_JOBS.add(job_id)
+                if job_id in JOBS:
+                    JOBS[job_id]["status"] = "cancelled"
+                    JOBS[job_id]["progress"] = "Cancelled by user"
+            cancel_all_render_jobs()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "message": "Render job cancelled"}).encode())
+            return
+
+        if path in ["/api/cancel_batch", "/api/stop_batch"]:
+            batch_id = query.get("batch_id", [None])[0]
+            if batch_id and batch_id in BATCH_JOBS:
+                BATCH_JOBS[batch_id]["status"] = "cancelled"
+                for j_id, j_obj in BATCH_JOBS[batch_id].get("jobs", {}).items():
+                    CANCELLED_JOBS.add(j_id)
+                    j_obj["status"] = "cancelled"
+            cancel_all_render_jobs()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "message": "Batch export cancelled"}).encode())
+            return
+
         if path == "/api/list_videos":
             videos = []
             seen = set()
@@ -629,6 +675,14 @@ May Allah bless everyone who listens and shares this recitation. Ameen.
     def do_POST(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+
+        if path in ["/api/cancel_render", "/api/cancel_job", "/api/stop_render", "/api/cancel_batch", "/api/stop_batch"]:
+            cancel_all_render_jobs()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "message": "Render cancelled by user"}).encode())
+            return
 
         if path == "/api/audio/randomize":
             content_length = int(self.headers.get("Content-Length", 0))
@@ -1547,6 +1601,11 @@ May Allah bless everyone who listens and shares this recitation. Ameen.
 
                 def execute_single_batch_job(j_id):
                     job = BATCH_JOBS[batch_id]["jobs"][j_id]
+                    if j_id in CANCELLED_JOBS or BATCH_JOBS.get(batch_id, {}).get("status") == "cancelled":
+                        job["status"] = "cancelled"
+                        job["progress"] = "Cancelled by user"
+                        return
+
                     spec = job["spec"]
                     job["status"] = "processing"
                     job["progress"] = "Starting render..."
@@ -1622,7 +1681,8 @@ May Allah bless everyone who listens and shares this recitation. Ameen.
                             template_bg=spec.get("template_bg"),
                             template_style=spec.get("template_style"),
                             template_name=spec.get("template_name", ""),
-                            progress_cb=update_prog
+                            progress_cb=update_prog,
+                            abort_check=lambda: (j_id in CANCELLED_JOBS or BATCH_JOBS.get(batch_id, {}).get("status") == "cancelled")
                         )
 
                         fname = os.path.basename(video_path)
@@ -1665,6 +1725,14 @@ May Allah bless everyone who listens and shares this recitation. Ameen.
                             f"Both MP4 video and separate metadata TXT saved in: {out_dir or OUT_DIR}"
                         )
 
+                    except RuntimeError as re:
+                        if "cancelled" in str(re).lower():
+                            job["status"] = "cancelled"
+                            job["progress"] = "Cancelled by user"
+                            return
+                        job["status"] = "failed"
+                        job["error"] = str(re)
+                        job["progress"] = f"Failed: {re}"
                     except Exception as e:
                         import traceback
                         traceback.print_exc()
@@ -1839,7 +1907,8 @@ May Allah bless everyone who listens and shares this recitation. Ameen.
                         template_bg=template_bg,
                         template_style=template_style,
                         template_name=template_name,
-                        progress_cb=update_prog
+                        progress_cb=update_prog,
+                        abort_check=lambda: job_id in CANCELLED_JOBS
                     )
 
                     fname = os.path.basename(video_path)
@@ -1867,6 +1936,15 @@ May Allah bless everyone who listens and shares this recitation. Ameen.
                         f"Exported to {video_path}"
                     )
 
+                except RuntimeError as re:
+                    if "cancelled" in str(re).lower():
+                        JOBS[job_id]["status"] = "cancelled"
+                        JOBS[job_id]["progress"] = "Cancelled by user"
+                        log_activity("INFO", "Video Render", f"Job {job_id} cancelled by user.")
+                        return
+                    JOBS[job_id]["status"] = "failed"
+                    JOBS[job_id]["error"] = str(re)
+                    JOBS[job_id]["progress"] = f"Failed: {re}"
                 except Exception as e:
                     import traceback
                     traceback.print_exc()
@@ -2065,10 +2143,14 @@ May Allah bless everyone who listens and shares this recitation. Ameen.
         self.end_headers()
 
 def run(port=8765):
+    kill_all_render_procs()
     server_address = ('', port)
     httpd = ThreadingHTTPServer(server_address, QuranStudioHandler)
     print(f"Quran Studio Server running on http://localhost:{port}")
-    httpd.serve_forever()
+    try:
+        httpd.serve_forever()
+    finally:
+        kill_all_render_procs()
 
 
 if __name__ == "__main__":

@@ -305,13 +305,28 @@ def build_audio_filter_chain(
 
     return ",".join(filters)
 
-def batch_render_all_slides(slide_manifest_items, width, height, progress_cb=None, start_time=None):
+ACTIVE_RENDER_PROCS = set()
+
+def kill_all_render_procs():
+    """Immediately terminates all active rendering subprocesses (node, chrome, ffmpeg)."""
+    for p in list(ACTIVE_RENDER_PROCS):
+        try:
+            p.kill()
+        except Exception:
+            pass
+    ACTIVE_RENDER_PROCS.clear()
+
+def batch_render_all_slides(slide_manifest_items, width, height, progress_cb=None, start_time=None, abort_check=None):
     """
-    Renders all slides in batch using render_slides_fast.mjs via persistent Chrome CDP.
-    Falls back to parallel ThreadPoolExecutor if node script fails.
+    Renders all slides in batch using render_slides_fast.mjs via a single persistent headless Chrome CDP session.
+    Never spawns individual Chrome instances in a loop.
+    Supports instant cancellation via abort_check.
     """
     if not slide_manifest_items:
         return
+    if abort_check and abort_check():
+        raise RuntimeError("Render cancelled by user before slide generation")
+
     manifest_path = os.path.join(RENDER_DIR, f"slides_manifest_{int(time.time()*1000)}.json")
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump({
@@ -328,6 +343,7 @@ def batch_render_all_slides(slide_manifest_items, width, height, progress_cb=Non
     )
 
     success = False
+    proc = None
     try:
         proc = subprocess.Popen(
             ["node", script_path, manifest_path],
@@ -336,10 +352,18 @@ def batch_render_all_slides(slide_manifest_items, width, height, progress_cb=Non
             text=True,
             bufsize=1
         )
+        ACTIVE_RENDER_PROCS.add(proc)
         import select
         last_progress_time = time.time()
         while proc.poll() is None:
-            rlist, _, _ = select.select([proc.stdout], [], [], 1.5)
+            if abort_check and abort_check():
+                print("Cancellation requested: terminating slide renderer immediately.")
+                try: proc.kill()
+                except Exception: pass
+                ACTIVE_RENDER_PROCS.discard(proc)
+                raise RuntimeError("Render cancelled by user")
+
+            rlist, _, _ = select.select([proc.stdout], [], [], 1.0)
             if rlist:
                 line = proc.stdout.readline()
                 if not line:
@@ -368,8 +392,8 @@ def batch_render_all_slides(slide_manifest_items, width, height, progress_cb=Non
                 except Exception:
                     pass
             else:
-                if time.time() - last_progress_time > 40:
-                    print("Warning: render_slides_fast.mjs inactive for 40s. Terminating and falling back to parallel Chrome capture.")
+                if time.time() - last_progress_time > 45:
+                    print("Warning: render_slides_fast.mjs inactive for 45s. Terminating cleanly.")
                     try: proc.kill()
                     except Exception: pass
                     break
@@ -381,53 +405,24 @@ def batch_render_all_slides(slide_manifest_items, width, height, progress_cb=Non
         except Exception:
             try: proc.kill()
             except Exception: pass
+    except RuntimeError:
+        raise
     except Exception as e:
         print(f"render_slides_fast execution error: {e}")
+    finally:
+        if proc:
+            ACTIVE_RENDER_PROCS.discard(proc)
+        try:
+            if os.path.exists(manifest_path):
+                os.remove(manifest_path)
+        except Exception:
+            pass
 
-    # Fallback to ThreadPoolExecutor if any slides were missed
+    if abort_check and abort_check():
+        raise RuntimeError("Render cancelled by user")
+
     if not success:
-        print("Falling back to multi-worker headless chrome capture...")
-        fallback_tasks = []
-        w_size = f"{width},{height}"
-        for item in slide_manifest_items:
-            t = item.get("type")
-            u = item.get("url")
-            if t == "wbw":
-                if item.get("base_out") and (not os.path.exists(item["base_out"]) or os.path.getsize(item["base_out"]) < 10000):
-                    fallback_tasks.append((f"{u}&wbw=1&active_word=-1", item["base_out"]))
-                for w_idx, w_out in item.get("word_outs", []):
-                    if not os.path.exists(w_out) or os.path.getsize(w_out) < 10000:
-                        fallback_tasks.append((f"{u}&wbw=1&active_word={w_idx}", w_out))
-            elif t == "urdu_wbw":
-                for w_idx, w_out in item.get("word_outs", []):
-                    if not os.path.exists(w_out) or os.path.getsize(w_out) < 10000:
-                        fallback_tasks.append((f"{u}&ur_word={w_idx}", w_out))
-            else:
-                out = item.get("out")
-                if out and (not os.path.exists(out) or os.path.getsize(out) < 10000):
-                    fallback_tasks.append((u, out))
-
-        def _cap(url_and_path):
-            url_c, path_c = url_and_path
-            cmd = [
-                CHROME_BIN, "--headless=new", "--disable-gpu", "--hide-scrollbars",
-                "--virtual-time-budget=2500", f"--window-size={w_size}",
-                f"--screenshot={path_c}", url_c
-            ]
-            try:
-                subprocess.run(cmd, capture_output=True, timeout=18)
-            except Exception:
-                pass
-
-        if fallback_tasks:
-            with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
-                list(ex.map(_cap, fallback_tasks))
-
-    try:
-        if os.path.exists(manifest_path):
-            os.remove(manifest_path)
-    except Exception:
-        pass
+        raise RuntimeError("Slide capture failed or was terminated. No background Chrome loop spawned.")
 
 def generate_video(
     surah=55, ayah_start=1, ayah_end=5, qari="alafasy",
@@ -445,7 +440,7 @@ def generate_video(
     loudness_norm=True, binaural_432=False,
     show_waveform=True, show_translit=False,
     v_num=None, template_id=None, template_bg=None, template_style=None, template_name="",
-    progress_cb=None
+    progress_cb=None, abort_check=None
 ):
     qari_name, qari_folder = RECITER_PREFIXES.get(qari, ("Mishary Rashid Alafasy", "Alafasy_128kbps"))
     surah_padded = f"{surah:03d}"
@@ -685,7 +680,7 @@ def generate_video(
             })
 
     # Execute Ultra-Fast Batch Slide Render via CDP
-    batch_render_all_slides(slide_manifest_items, res_cfg["w"], res_cfg["h"], progress_cb, start_time)
+    batch_render_all_slides(slide_manifest_items, res_cfg["w"], res_cfg["h"], progress_cb, start_time, abort_check=abort_check)
 
     # Phase 2: Rapid Assembly of Timeline & Audio Segments
     for v_idx, v in enumerate(verses):
